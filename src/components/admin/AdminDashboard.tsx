@@ -9,7 +9,7 @@ import ResponseFeed from "./ResponseFeed";
 import ExportButton from "./ExportButton";
 import QRCodePanel from "./QRCodePanel";
 import EmailSnippets from "./EmailSnippets";
-import QuestionViewer from "./QuestionViewer";
+import SurveyEditor from "./SurveyEditor";
 import DateRangeFilter from "./DateRangeFilter";
 import { Skeleton } from "@/components/ui/skeleton";
 
