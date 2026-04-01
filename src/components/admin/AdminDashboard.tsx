@@ -9,7 +9,7 @@ import ResponseFeed from "./ResponseFeed";
 import ExportButton from "./ExportButton";
 import QRCodePanel from "./QRCodePanel";
 import EmailSnippets from "./EmailSnippets";
-import QuestionViewer from "./QuestionViewer";
+import SurveyEditor from "./SurveyEditor";
 import DateRangeFilter from "./DateRangeFilter";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -122,7 +122,11 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
               <QRCodePanel />
             </div>
             <EmailSnippets />
-            <QuestionViewer />
+          </div>
+
+          <div className="border-t border-border pt-8 space-y-8">
+            <h2 className="text-lg font-semibold text-foreground">Survey Editor</h2>
+            <SurveyEditor />
           </div>
         </div>
       </div>

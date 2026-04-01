@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { surveyConfig } from "@/config/surveyConfig";
+import { getLabel } from "@/utils/labelMap";
 import type { SurveyResponse } from "@/utils/generateMockData";
 import { format } from "date-fns";
 
@@ -15,10 +15,6 @@ const yearColors: Record<string, string> = {
   junior: "bg-purple-100 text-purple-800",
   senior: "bg-amber-100 text-amber-800",
 };
-
-function stageLabel(id: string): string {
-  return surveyConfig.pipelineStages.find((s) => s.id === id)?.label?.slice(0, 30) + "…" || id;
-}
 
 const ResponseFeed = ({ data }: ResponseFeedProps) => {
   const [sortKey, setSortKey] = useState<SortKey>("timestamp");
@@ -65,15 +61,15 @@ const ResponseFeed = ({ data }: ResponseFeedProps) => {
                 </td>
                 <td className="p-2">
                   <span className={`text-xs px-2 py-0.5 rounded-full ${yearColors[r.class_year] || ""}`}>
-                    {r.class_year}
+                    {getLabel(r.class_year)}
                   </span>
                 </td>
                 <td className="p-2">
                   <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                    {stageLabel(r.pipeline_stage)}
+                    {getLabel(r.pipeline_stage).slice(0, 30)}…
                   </span>
                 </td>
-                <td className="p-2 text-xs text-foreground truncate max-w-[150px]">{r.bottleneck_detail}</td>
+                <td className="p-2 text-xs text-foreground truncate max-w-[150px]">{getLabel(r.bottleneck_detail)}</td>
                 <td className="p-2 text-xs text-center text-muted-foreground">{r.question_count}</td>
               </tr>
             ))}

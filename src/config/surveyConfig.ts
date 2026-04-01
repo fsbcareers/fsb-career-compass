@@ -10,19 +10,19 @@ export const surveyConfig = {
         { id: "academic_priority", label: "I've been focused on academics and haven't made time" },
         { id: "qualification_doubt", label: "I don't think I'm qualified for internships yet" },
       ],
-      resourceNudge: "No judgment — you're here now. Start with one step: upload your resume to Handshake this week.",
+      resourceNudge: "No judgment. You're here now. Start with one step: upload your resume to Handshake this week.",
     },
     {
       id: "career_clarity",
       label: "I don't know what kind of role or industry I want",
       drilldownQuestion: "What's making career direction hard to figure out?",
       drilldownOptions: [
-        { id: "too_many_interests", label: "I have too many interests — can't narrow down" },
+        { id: "too_many_interests", label: "I have too many interests and can't narrow down" },
         { id: "low_awareness", label: "I have no idea what's even out there" },
         { id: "field_not_roles", label: "I know the field but not specific roles or companies" },
         { id: "major_mismatch", label: "I'm not sure my major aligns with what I actually want to do" },
       ],
-      resourceNudge: "The Center for Career Exploration has 1-on-1 sessions that can help — book one this week.",
+      resourceNudge: "The Center for Career Exploration has 1-on-1 sessions that can help. Book one this week.",
     },
     {
       id: "finding_opportunities",
@@ -34,7 +34,7 @@ export const surveyConfig = {
         { id: "experience_gap", label: "I see postings but they all require experience I don't have" },
         { id: "no_network", label: "I don't have a professional network to tap into yet" },
       ],
-      resourceNudge: "Check Handshake's curated lists filtered by your major — they're updated weekly.",
+      resourceNudge: "Check Handshake's curated lists filtered by your major. They're updated weekly.",
     },
     {
       id: "application_materials",
@@ -46,19 +46,19 @@ export const surveyConfig = {
         { id: "no_cover_letter", label: "I haven't written a cover letter and don't know how" },
         { id: "no_tailoring", label: "I don't know how to tailor my materials for different companies" },
       ],
-      resourceNudge: "Drop into a resume clinic or book a 15-minute review — no appointment needed.",
+      resourceNudge: "Drop into a resume clinic or book a 15-minute review. No appointment needed.",
     },
     {
       id: "getting_responses",
       label: "I'm applying but not hearing back",
       drilldownQuestion: "How would you describe your application situation?",
       drilldownOptions: [
-        { id: "low_volume", label: "I've applied to fewer than 5 places — I need to apply more" },
+        { id: "low_volume", label: "I've applied to fewer than 5 places. I need to apply more" },
         { id: "high_volume_no_response", label: "I've applied to 10+ places and haven't heard from any" },
         { id: "auto_rejected", label: "I keep getting automated rejections immediately" },
         { id: "visibility_unknown", label: "I don't know if my applications are even being seen" },
       ],
-      resourceNudge: "A career advisor can review your application strategy — book a quick session.",
+      resourceNudge: "A career advisor can review your application strategy. Book a quick session.",
     },
     {
       id: "interview_performance",
@@ -68,9 +68,9 @@ export const surveyConfig = {
         { id: "nerves", label: "I get nervous and don't perform well under pressure" },
         { id: "behavioral_weak", label: "I can't answer behavioral or 'tell me about a time' questions well" },
         { id: "stalls_at_finals", label: "I do fine in first rounds but don't advance to finals" },
-        { id: "prep_unclear", label: "I don't know how to prepare — what do they actually want?" },
+        { id: "prep_unclear", label: "I don't know how to prepare. What do they actually want?" },
       ],
-      resourceNudge: "Mock interviews run every week — sign up through Handshake.",
+      resourceNudge: "Mock interviews run every week. Sign up through Handshake.",
     },
     {
       id: "evaluating_offers",
@@ -78,11 +78,11 @@ export const surveyConfig = {
       drilldownQuestion: "What's making the decision difficult?",
       drilldownOptions: [
         { id: "tradeoff_unclear", label: "I'm comparing offers and don't know how to weigh salary vs. learning" },
-        { id: "lukewarm_offer", label: "I got an offer but I'm not excited about it — should I hold out?" },
+        { id: "lukewarm_offer", label: "I got an offer but I'm not excited about it. Should I hold out?" },
         { id: "time_pressure", label: "I need to decide quickly and don't have enough information" },
         { id: "regret_aversion", label: "I'm worried about accepting and then regretting it" },
       ],
-      resourceNudge: "A career advisor can walk you through offer evaluation — book a meeting.",
+      resourceNudge: "A career advisor can walk you through offer evaluation. Book a meeting.",
     },
   ],
 
@@ -129,7 +129,7 @@ export const surveyConfig = {
     },
     {
       id: "follow_up_5",
-      question: "One last one — what's your major?",
+      question: "One last one. What's your major?",
       options: [
         { id: "finance", label: "Finance" },
         { id: "marketing", label: "Marketing" },
@@ -140,9 +140,9 @@ export const surveyConfig = {
   ],
 
   continuePrompts: [
-    "That helps — got one more in you?",
-    "You're helping a lot — one more quick one?",
-    "Almost done — one more?",
+    "That helps! Got one more in you?",
+    "You're helping a lot! One more quick one?",
+    "Almost done! One more?",
     "Last one, promise?",
   ],
 };
