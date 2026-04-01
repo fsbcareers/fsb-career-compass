@@ -1,15 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import { fetchSheetData } from "@/utils/fetchSheetData";
 import type { SurveyResponse } from "@/utils/generateMockData";
+import AdminNav from "./AdminNav";
 import MetricCards from "./MetricCards";
 import BottleneckHeatmap from "./BottleneckHeatmap";
 import DrilldownPanel from "./DrilldownPanel";
 import ResponseTimeline from "./ResponseTimeline";
-import ResponseFeed from "./ResponseFeed";
-import ExportButton from "./ExportButton";
-import QRCodePanel from "./QRCodePanel";
-import EmailSnippets from "./EmailSnippets";
-import SurveyEditor from "./SurveyEditor";
+import CompactResponses from "./CompactResponses";
 import DateRangeFilter from "./DateRangeFilter";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -77,7 +74,7 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
     <div className="min-h-screen bg-background">
       <div className="max-w-[1100px] mx-auto p-4 md:p-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
               Farmer School of Business
@@ -91,6 +88,8 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
             Sign out
           </button>
         </div>
+
+        <AdminNav />
 
         <div className="space-y-8">
           <MetricCards data={filteredData} />
@@ -113,21 +112,7 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
 
           <ResponseTimeline data={filteredData} />
 
-          <ResponseFeed data={filteredData} />
-
-          <div className="border-t border-border pt-8 space-y-8">
-            <h2 className="text-lg font-semibold text-foreground">Admin Tools</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <ExportButton data={data} />
-              <QRCodePanel />
-            </div>
-            <EmailSnippets />
-          </div>
-
-          <div className="border-t border-border pt-8 space-y-8">
-            <h2 className="text-lg font-semibold text-foreground">Survey Editor</h2>
-            <SurveyEditor />
-          </div>
+          <CompactResponses data={filteredData} />
         </div>
       </div>
     </div>
