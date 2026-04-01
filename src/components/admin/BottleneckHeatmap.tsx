@@ -49,22 +49,22 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm border-collapse">
+      <table className="w-full text-sm" style={{ borderSpacing: "4px 6px", borderCollapse: "separate" }}>
         <thead>
           <tr>
-            <th className="p-2 text-left text-xs text-muted-foreground font-normal" />
+            <th className="px-3 py-2 text-left text-xs text-muted-foreground font-normal" />
             {stages.map((s, i) => (
-              <th key={s.id} className="p-2 text-center text-xs text-muted-foreground font-normal min-w-[80px]">
+              <th key={s.id} className="px-3 py-2 text-center text-xs text-muted-foreground font-normal min-w-[85px]">
                 {shortStageLabels[i]}
               </th>
             ))}
-            <th className="p-2 text-center text-xs text-muted-foreground font-normal">n</th>
+            <th className="px-3 py-2 text-center text-xs text-muted-foreground font-normal">n</th>
           </tr>
         </thead>
         <tbody>
           {years.map((y) => (
             <tr key={y}>
-              <td className="p-2 text-sm font-medium text-foreground">{yearLabels[y]}</td>
+              <td className="px-3 py-2.5 text-sm font-medium text-foreground">{yearLabels[y]}</td>
               {stages.map((s) => {
                 const count = grid[y][s.id];
                 const pct = yearTotals[y] ? Math.round((count / yearTotals[y]) * 100) : 0;
@@ -76,8 +76,8 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
                     onClick={() =>
                       onCellSelect(isSelected ? null : { year: y, stage: s.id })
                     }
-                    className={`p-2 text-center cursor-pointer rounded transition-all ${
-                      isSelected ? "ring-2 ring-ring ring-offset-1" : ""
+                    className={`px-3 py-2.5 text-center cursor-pointer rounded-md transition-all ${
+                      isSelected ? "ring-2 ring-ring ring-offset-2" : ""
                     }`}
                     style={{ backgroundColor: bg, color: text }}
                   >
@@ -85,20 +85,24 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
                   </td>
                 );
               })}
-              <td className="p-2 text-center text-xs text-muted-foreground">n={yearTotals[y]}</td>
+              <td className="px-3 py-2.5 text-center text-xs text-muted-foreground">n={yearTotals[y]}</td>
             </tr>
           ))}
-          <tr className="border-t border-border">
-            <td className="p-2 text-xs text-muted-foreground">Overall</td>
-            {stages.map((s) => {
-              const pct = totalResponses ? Math.round((colTotals[s.id] / totalResponses) * 100) : 0;
-              return (
-                <td key={s.id} className="p-2 text-center text-xs text-muted-foreground">
-                  {pct}%
-                </td>
-              );
-            })}
-            <td className="p-2 text-center text-xs text-muted-foreground">n={totalResponses}</td>
+          <tr>
+            <td className="px-3 pt-4 pb-2 text-xs text-muted-foreground border-t border-border" colSpan={stages.length + 2}>
+              <div className="flex items-center">
+                <span className="w-[85px] shrink-0">Overall</span>
+                <div className="flex flex-1">
+                  {stages.map((s) => {
+                    const pct = totalResponses ? Math.round((colTotals[s.id] / totalResponses) * 100) : 0;
+                    return (
+                      <span key={s.id} className="flex-1 text-center">{pct}%</span>
+                    );
+                  })}
+                  <span className="w-[85px] text-center shrink-0">n={totalResponses}</span>
+                </div>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

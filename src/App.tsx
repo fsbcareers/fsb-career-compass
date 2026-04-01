@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Survey from "./pages/Survey.tsx";
 import Admin from "./pages/Admin.tsx";
+import AdminEditor from "./pages/AdminEditor.tsx";
+import Distribute from "./pages/Distribute.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -19,6 +21,8 @@ const App = () => (
           <Route path="/" element={<Navigate to="/survey" replace />} />
           <Route path="/survey" element={<Survey />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/editor" element={<AdminEditor />} />
+          <Route path="/distribute" element={<Distribute />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
