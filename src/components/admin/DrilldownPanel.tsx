@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
+import { getLabel } from "@/utils/labelMap";
 import type { SurveyResponse } from "@/utils/generateMockData";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
@@ -8,25 +9,11 @@ interface DrilldownPanelProps {
   selectedCell: { year: string; stage: string } | null;
 }
 
-const yearLabels: Record<string, string> = { freshman: "Freshman", sophomore: "Sophomore", junior: "Junior", senior: "Senior" };
-
-function lookupLabel(stageId: string, detailId: string): string {
-  const stage = surveyConfig.pipelineStages.find((s) => s.id === stageId);
-  if (!stage) return detailId;
-  const opt = stage.drilldownOptions.find((o) => o.id === detailId);
-  return opt?.label || detailId;
-}
-
-function lookupStageLabel(stageId: string): string {
-  return surveyConfig.pipelineStages.find((s) => s.id === stageId)?.label?.split("—")[0]?.trim() || stageId;
-}
-
-function lookupFollowUpLabel(qIdx: number, optId: string): string {
-  const q = surveyConfig.followUpQuestions[qIdx];
-  return q?.options.find((o) => o.id === optId)?.label || optId;
-}
+const INITIAL_SHOW = 10;
 
 const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
+  const [expanded, setExpanded] = useState(false);
+
   const { filtered, detailCounts, header, followUpData } = useMemo(() => {
     let subset = data;
     let hdr = "Overall bottleneck breakdown";
@@ -35,7 +22,7 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
       subset = data.filter(
         (r) => r.class_year === selectedCell.year && r.pipeline_stage === selectedCell.stage
       );
-      hdr = `${yearLabels[selectedCell.year]} × ${lookupStageLabel(selectedCell.stage)} (n=${subset.length})`;
+      hdr = `${getLabel(selectedCell.year)} × ${getLabel(selectedCell.stage).split(" ").slice(0, 5).join(" ")}… (n=${subset.length})`;
     }
 
     const counts: Record<string, number> = {};
@@ -57,7 +44,7 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
         fuData.push({
           question: surveyConfig.followUpQuestions[i]?.question || `Follow-up ${i + 1}`,
           distribution: Object.entries(fuCounts)
-            .map(([id, count]) => ({ label: lookupFollowUpLabel(i, id), count }))
+            .map(([id, count]) => ({ label: getLabel(id), count }))
             .sort((a, b) => b.count - a.count),
         });
       }
@@ -70,8 +57,12 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
   const max = sorted[0]?.[1] || 1;
   const total = filtered.length || 1;
 
-  // Find the relevant stage for label lookups
-  const stageId = selectedCell?.stage || (sorted[0] ? data.find(r => r.bottleneck_detail === sorted[0][0])?.pipeline_stage : undefined);
+  const hasMore = sorted.length > INITIAL_SHOW;
+  const visible = expanded ? sorted : sorted.slice(0, INITIAL_SHOW);
+  const remaining = sorted.length - INITIAL_SHOW;
+
+  // Reset expanded when selection changes
+  useMemo(() => setExpanded(false), [selectedCell]);
 
   return (
     <div className="rounded-lg border border-border p-4 md:p-6">
@@ -80,13 +71,12 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
         <p className="text-sm text-muted-foreground">No data for this selection.</p>
       ) : (
         <div className="space-y-2">
-          {sorted.map(([id, count]) => {
+          {visible.map(([id, count]) => {
             const pct = Math.round((count / total) * 100);
-            const label = stageId ? lookupLabel(stageId, id) : id;
             return (
               <div key={id}>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-foreground truncate mr-2">{label}</span>
+                  <span className="text-foreground truncate mr-2">{getLabel(id)}</span>
                   <span className="text-muted-foreground shrink-0">{pct}% ({count})</span>
                 </div>
                 <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -98,6 +88,14 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
               </div>
             );
           })}
+          {hasMore && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="text-sm text-primary hover:underline mt-2"
+            >
+              {expanded ? "Show less" : `Show all (${remaining} remaining)`}
+            </button>
+          )}
         </div>
       )}
 

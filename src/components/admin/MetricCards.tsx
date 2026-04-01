@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { surveyConfig } from "@/config/surveyConfig";
+import { getLabel } from "@/utils/labelMap";
 import type { SurveyResponse } from "@/utils/generateMockData";
 
 interface MetricCardsProps {
@@ -21,7 +21,7 @@ const MetricCards = ({ data }: MetricCardsProps) => {
     const topStage = Object.entries(stageCounts).sort((a, b) => b[1] - a[1])[0];
     const topYear = Object.entries(yearCounts).sort((a, b) => b[1] - a[1])[0];
     const stageLabel = topStage
-      ? surveyConfig.pipelineStages.find((s) => s.id === topStage[0])?.label?.split(" ").slice(0, 5).join(" ") + "…"
+      ? getLabel(topStage[0]).split(" ").slice(0, 5).join(" ") + "…"
       : "N/A";
 
     const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
@@ -31,7 +31,7 @@ const MetricCards = ({ data }: MetricCardsProps) => {
       { label: "Total responses", value: total.toString() },
       { label: "Avg questions answered", value: avgQ },
       { label: "Top bottleneck", value: stageLabel || "N/A" },
-      { label: "Most stuck year", value: topYear ? topYear[0].charAt(0).toUpperCase() + topYear[0].slice(1) : "N/A" },
+      { label: "Most stuck year", value: topYear ? getLabel(topYear[0]) : "N/A" },
       { label: "This week", value: thisWeek > 0 ? thisWeek.toString() : "N/A" },
     ];
   }, [data]);
