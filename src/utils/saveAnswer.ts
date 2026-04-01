@@ -1,7 +1,7 @@
-const WEBHOOK_URL = ""; // Replace with Google Apps Script URL
+import { WEBHOOK_URL } from "@/config/webhookConfig";
 
 interface SaveResult {
-  rowId: string | null;
+  row_id: string | null;
 }
 
 export async function saveAnswer(
@@ -10,26 +10,25 @@ export async function saveAnswer(
   value: string
 ): Promise<SaveResult> {
   if (!WEBHOOK_URL) {
-    console.log(`[saveAnswer] ${rowId ? `row_id=${rowId}` : "new row"} | ${field}=${value}`);
-    // Simulate a row_id for dev
-    return { rowId: rowId || `dev-${Date.now()}` };
+    console.log(`[Survey] Save: ${field} = ${value} (row: ${rowId || "new"})`);
+    return { row_id: rowId || `local_${Date.now()}` };
   }
 
   try {
-    const body = rowId
+    const payload = rowId
       ? { row_id: rowId, field, value }
-      : { [field]: value };
+      : { value };
 
     const response = await fetch(WEBHOOK_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "text/plain" },
     });
 
     const data = await response.json();
-    return { rowId: data.row_id?.toString() || rowId };
+    return { row_id: data.row_id || rowId };
   } catch (error) {
-    console.warn("[saveAnswer] Failed silently:", error);
-    return { rowId: rowId || `fallback-${Date.now()}` };
+    console.error("[Survey] Save failed:", error);
+    return { row_id: rowId || `error_${Date.now()}` };
   }
 }

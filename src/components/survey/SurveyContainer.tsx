@@ -25,7 +25,7 @@ interface SurveyContainerProps {
 
 const VALID_YEARS = ["freshman", "sophomore", "junior", "senior"];
 const MAX_FOLLOW_UPS = surveyConfig.followUpQuestions.length;
-const TOTAL_POSSIBLE = 3 + MAX_FOLLOW_UPS; // core + follow-ups
+const TOTAL_POSSIBLE = 3 + MAX_FOLLOW_UPS;
 
 const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const hasValidYear = initialYear && VALID_YEARS.includes(initialYear);
@@ -39,11 +39,11 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const [history, setHistory] = useState<Screen[]>([]);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
-  // Save initial year from URL param on first render
+  // Save initial year from URL param — fire-and-forget
   const [initialSaved, setInitialSaved] = useState(false);
   if (hasValidYear && !initialSaved) {
     setInitialSaved(true);
-    saveAnswer(null, "class_year", initialYear!).then((r) => setRowId(r.rowId));
+    saveAnswer(null, "class_year", initialYear!).then((r) => setRowId(r.row_id));
   }
 
   const pushScreen = useCallback(
@@ -65,40 +65,41 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
     });
   }, []);
 
-  const handleYear = async (year: string) => {
+  const handleYear = (year: string) => {
     setClassYear(year);
-    const result = await saveAnswer(rowId, "class_year", year);
-    setRowId(result.rowId);
     setQuestionCount(1);
     pushScreen("stage");
+    // Fire-and-forget save
+    saveAnswer(rowId, "class_year", year).then((r) => setRowId(r.row_id));
   };
 
-  const handleStage = async (id: string) => {
+  const handleStage = (id: string) => {
     setStageId(id);
-    await saveAnswer(rowId, "pipeline_stage", id);
     setQuestionCount((c) => Math.max(c, 2));
     pushScreen("drilldown");
+    saveAnswer(rowId, "pipeline_stage", id);
   };
 
-  const handleDrilldown = async (optionId: string) => {
-    await saveAnswer(rowId, "bottleneck_detail", optionId);
+  const handleDrilldown = (optionId: string) => {
     setQuestionCount((c) => Math.max(c, 3));
     pushScreen("continue_prompt");
+    saveAnswer(rowId, "bottleneck_detail", optionId);
   };
 
-  const handleFollowUp = async (optionId: string) => {
+  const handleFollowUp = (optionId: string) => {
     const fieldName = surveyConfig.followUpQuestions[followUpIndex].id;
-    await saveAnswer(rowId, fieldName, optionId);
     const newCount = 4 + followUpIndex;
     setQuestionCount(newCount);
-    await saveAnswer(rowId, "question_count", newCount.toString());
+
+    // Fire-and-forget saves
+    saveAnswer(rowId, fieldName, optionId);
+    saveAnswer(rowId, "question_count", newCount.toString());
 
     const nextIndex = followUpIndex + 1;
     if (nextIndex >= MAX_FOLLOW_UPS) {
       pushScreen("confirmation");
     } else {
       setFollowUpIndex(nextIndex);
-      // If this was the 4th follow-up (index 3), skip prompt and go to last
       if (nextIndex === MAX_FOLLOW_UPS - 1) {
         pushScreen("follow_up");
       } else {
@@ -111,8 +112,8 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
     pushScreen("follow_up");
   };
 
-  const handleDone = async () => {
-    await saveAnswer(rowId, "question_count", questionCount.toString());
+  const handleDone = () => {
+    saveAnswer(rowId, "question_count", questionCount.toString());
     pushScreen("confirmation");
   };
 
