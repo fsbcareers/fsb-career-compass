@@ -109,6 +109,7 @@ export default {
         "slide-in-right": "slide-in-right 0.2s ease-out",
         "fade-in": "fade-in 0.3s ease-out",
         "check-draw": "check-draw 0.5s ease-out forwards",
+        shake: "shake 0.4s ease-in-out",
       },
     },
   },
