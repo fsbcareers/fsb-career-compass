@@ -96,6 +96,11 @@ export default {
           "0%": { "stroke-dashoffset": "100" },
           "100%": { "stroke-dashoffset": "0" },
         },
+        shake: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "20%, 60%": { transform: "translateX(-6px)" },
+          "40%, 80%": { transform: "translateX(6px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -104,6 +109,7 @@ export default {
         "slide-in-right": "slide-in-right 0.2s ease-out",
         "fade-in": "fade-in 0.3s ease-out",
         "check-draw": "check-draw 0.5s ease-out forwards",
+        shake: "shake 0.4s ease-in-out",
       },
     },
   },
