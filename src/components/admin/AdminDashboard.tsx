@@ -122,7 +122,11 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
               <QRCodePanel />
             </div>
             <EmailSnippets />
-            <QuestionViewer />
+          </div>
+
+          <div className="border-t border-border pt-8 space-y-8">
+            <h2 className="text-lg font-semibold text-foreground">Survey Editor</h2>
+            <SurveyEditor />
           </div>
         </div>
       </div>
