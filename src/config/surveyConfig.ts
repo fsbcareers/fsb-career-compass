@@ -55,6 +55,7 @@ export const surveyConfig = {
     {
       id: "getting_responses",
       label: "I'm applying but not hearing back",
+      subtitle: "Waiting for responses",
       drilldownQuestion: "How would you describe your application situation?",
       drilldownOptions: [
         { id: "low_volume", label: "I've applied to fewer than 5 places. I need to apply more" },
