@@ -64,6 +64,10 @@ export default {
           "button-hover": "hsl(var(--survey-button-hover))",
           subtitle: "hsl(var(--survey-subtitle))",
           progress: "hsl(var(--survey-progress))",
+          "pipeline-line": "hsl(var(--survey-pipeline-line))",
+          "pipeline-dot": "hsl(var(--survey-pipeline-dot))",
+          "highlight-bg": "hsl(var(--survey-highlight-bg))",
+          "highlight-text": "hsl(var(--survey-highlight-text))",
         },
       },
       borderRadius: {

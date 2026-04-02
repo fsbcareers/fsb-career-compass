@@ -44,6 +44,10 @@ All colors MUST be HSL.
     --survey-button-hover: 220 14% 96%;
     --survey-subtitle: 220 9% 46%;
     --survey-progress: 160 76% 24%;
+    --survey-pipeline-line: 220 13% 91%;
+    --survey-pipeline-dot: 160 76% 24%;
+    --survey-highlight-bg: 152 64% 92%;
+    --survey-highlight-text: 163 82% 17%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

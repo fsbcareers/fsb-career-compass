@@ -3,6 +3,7 @@ export const surveyConfig = {
     {
       id: "not_started",
       label: "I haven't started the process yet",
+      subtitle: "The starting line",
       drilldownQuestion: "What's been the main reason you haven't started?",
       drilldownOptions: [
         { id: "overwhelmed", label: "It feels overwhelming and I don't know where to begin" },
@@ -15,6 +16,7 @@ export const surveyConfig = {
     {
       id: "career_clarity",
       label: "I don't know what kind of role or industry I want",
+      subtitle: "Finding direction",
       drilldownQuestion: "What's making career direction hard to figure out?",
       drilldownOptions: [
         { id: "too_many_interests", label: "I have too many interests and can't narrow down" },
@@ -27,6 +29,7 @@ export const surveyConfig = {
     {
       id: "finding_opportunities",
       label: "I don't know where to find internships or which companies to target",
+      subtitle: "Searching for opportunities",
       drilldownQuestion: "What's the hardest part of finding the right opportunities?",
       drilldownOptions: [
         { id: "platform_unaware", label: "I don't know which job boards or platforms to use" },
@@ -39,6 +42,7 @@ export const surveyConfig = {
     {
       id: "application_materials",
       label: "My resume or application materials aren't ready",
+      subtitle: "Getting your materials ready",
       drilldownQuestion: "What specifically feels off about your application materials?",
       drilldownOptions: [
         { id: "thin_resume", label: "I don't have enough experience to put on my resume" },
@@ -51,6 +55,7 @@ export const surveyConfig = {
     {
       id: "getting_responses",
       label: "I'm applying but not hearing back",
+      subtitle: "Waiting for responses",
       drilldownQuestion: "How would you describe your application situation?",
       drilldownOptions: [
         { id: "low_volume", label: "I've applied to fewer than 5 places. I need to apply more" },
@@ -63,6 +68,7 @@ export const surveyConfig = {
     {
       id: "interview_performance",
       label: "I'm getting interviews but not advancing or getting offers",
+      subtitle: "The interview stage",
       drilldownQuestion: "Where in the interview process are things breaking down?",
       drilldownOptions: [
         { id: "nerves", label: "I get nervous and don't perform well under pressure" },
@@ -75,6 +81,7 @@ export const surveyConfig = {
     {
       id: "evaluating_offers",
       label: "I have an offer (or multiple) but I'm unsure what to accept",
+      subtitle: "Decision time",
       drilldownQuestion: "What's making the decision difficult?",
       drilldownOptions: [
         { id: "tradeoff_unclear", label: "I'm comparing offers and don't know how to weigh salary vs. learning" },
