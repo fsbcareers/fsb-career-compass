@@ -29,6 +29,7 @@ export const surveyConfig = {
     {
       id: "finding_opportunities",
       label: "I don't know where to find internships or which companies to target",
+      subtitle: "Searching for opportunities",
       drilldownQuestion: "What's the hardest part of finding the right opportunities?",
       drilldownOptions: [
         { id: "platform_unaware", label: "I don't know which job boards or platforms to use" },
