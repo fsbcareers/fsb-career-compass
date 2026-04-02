@@ -42,6 +42,7 @@ export const surveyConfig = {
     {
       id: "application_materials",
       label: "My resume or application materials aren't ready",
+      subtitle: "Getting your materials ready",
       drilldownQuestion: "What specifically feels off about your application materials?",
       drilldownOptions: [
         { id: "thin_resume", label: "I don't have enough experience to put on my resume" },
