@@ -3,6 +3,7 @@ export const surveyConfig = {
     {
       id: "not_started",
       label: "I haven't started the process yet",
+      subtitle: "The starting line",
       drilldownQuestion: "What's been the main reason you haven't started?",
       drilldownOptions: [
         { id: "overwhelmed", label: "It feels overwhelming and I don't know where to begin" },
