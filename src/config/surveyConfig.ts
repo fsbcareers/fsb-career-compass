@@ -68,6 +68,7 @@ export const surveyConfig = {
     {
       id: "interview_performance",
       label: "I'm getting interviews but not advancing or getting offers",
+      subtitle: "The interview stage",
       drilldownQuestion: "Where in the interview process are things breaking down?",
       drilldownOptions: [
         { id: "nerves", label: "I get nervous and don't perform well under pressure" },
