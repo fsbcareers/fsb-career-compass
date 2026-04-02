@@ -87,9 +87,6 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
                 <span className="text-base leading-[1.4] text-foreground block">
                   {stage.label}
                 </span>
-                <span className="text-xs text-survey-subtitle mt-0.5 block">
-                  {stage.subtitle}
-                </span>
               </div>
 
               {/* Chevron */}

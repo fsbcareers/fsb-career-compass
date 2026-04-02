@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
 import { saveAnswer } from "@/utils/saveAnswer";
-import ProgressBar from "./ProgressBar";
 import SurveyHeader from "./SurveyHeader";
 import BackButton from "./BackButton";
 import YearSelect from "./YearSelect";
@@ -10,6 +9,7 @@ import DrilldownSelect from "./DrilldownSelect";
 import ContinuePrompt from "./ContinuePrompt";
 import FollowUpQuestion from "./FollowUpQuestion";
 import Confirmation from "./Confirmation";
+import EncouragingMessage from "./EncouragingMessage";
 
 type Screen =
   | "year"
@@ -25,7 +25,6 @@ interface SurveyContainerProps {
 
 const VALID_YEARS = ["freshman", "sophomore", "junior", "senior"];
 const MAX_FOLLOW_UPS = surveyConfig.followUpQuestions.length;
-const TOTAL_POSSIBLE = 3 + MAX_FOLLOW_UPS;
 
 const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const hasValidYear = initialYear && VALID_YEARS.includes(initialYear);
@@ -38,6 +37,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const [followUpIndex, setFollowUpIndex] = useState(0);
   const [history, setHistory] = useState<Screen[]>([]);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
+  const [showEncouragement, setShowEncouragement] = useState(false);
 
   // Save initial year from URL param — fire-and-forget
   const [initialSaved, setInitialSaved] = useState(false);
@@ -69,7 +69,6 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
     setClassYear(year);
     setQuestionCount(1);
     pushScreen("stage");
-    // Fire-and-forget save
     saveAnswer(rowId, "class_year", year).then((r) => setRowId(r.row_id));
   };
 
@@ -82,6 +81,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
 
   const handleDrilldown = (optionId: string) => {
     setQuestionCount((c) => Math.max(c, 3));
+    setShowEncouragement(true);
     pushScreen("continue_prompt");
     saveAnswer(rowId, "bottleneck_detail", optionId);
   };
@@ -91,7 +91,6 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
     const newCount = 4 + followUpIndex;
     setQuestionCount(newCount);
 
-    // Fire-and-forget saves
     saveAnswer(rowId, fieldName, optionId);
     saveAnswer(rowId, "question_count", newCount.toString());
 
@@ -109,6 +108,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   };
 
   const handleContinue = () => {
+    setShowEncouragement(false);
     pushScreen("follow_up");
   };
 
@@ -126,17 +126,15 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
     setFollowUpIndex(0);
     setHistory([]);
     setInitialSaved(false);
+    setShowEncouragement(false);
   };
 
-  const progress = questionCount / TOTAL_POSSIBLE;
   const showBack = screen !== "year" && screen !== "confirmation" && history.length > 0;
-
   const animationClass = direction === "forward" ? "animate-slide-in-left" : "animate-slide-in-right";
 
   return (
-    <div className="min-h-screen bg-survey-bg flex justify-center">
+    <div className="min-h-screen bg-survey-bg flex justify-center overscroll-contain">
       <div className="w-full max-w-[480px]">
-        <ProgressBar progress={progress} />
         <SurveyHeader />
         <div className="px-5 pb-10">
           {showBack && (
@@ -151,11 +149,14 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
               <DrilldownSelect stageId={stageId} onSelect={handleDrilldown} />
             )}
             {screen === "continue_prompt" && (
-              <ContinuePrompt
-                prompt={surveyConfig.continuePrompts[Math.min(followUpIndex, surveyConfig.continuePrompts.length - 1)]}
-                onContinue={handleContinue}
-                onDone={handleDone}
-              />
+              <div>
+                {showEncouragement && <EncouragingMessage />}
+                <ContinuePrompt
+                  prompt={surveyConfig.continuePrompts[Math.min(followUpIndex, surveyConfig.continuePrompts.length - 1)]}
+                  onContinue={handleContinue}
+                  onDone={handleDone}
+                />
+              </div>
             )}
             {screen === "follow_up" && (
               <FollowUpQuestion

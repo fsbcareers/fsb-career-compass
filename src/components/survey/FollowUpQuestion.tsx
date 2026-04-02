@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
 
 interface FollowUpQuestionProps {
@@ -7,20 +8,35 @@ interface FollowUpQuestionProps {
 
 const FollowUpQuestion = ({ questionIndex, onSelect }: FollowUpQuestionProps) => {
   const question = surveyConfig.followUpQuestions[questionIndex];
+  const [tapped, setTapped] = useState<string | null>(null);
+
+  const handleTap = (optionId: string) => {
+    setTapped(optionId);
+    setTimeout(() => onSelect(optionId), 150);
+  };
 
   return (
     <div className="animate-slide-in-left">
-      <h2 className="text-xl font-semibold text-foreground mb-6">
+      <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
         {question.question}
       </h2>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-[10px]">
         {question.options.map((option) => (
           <button
             key={option.id}
-            onClick={() => onSelect(option.id)}
-            className="w-full text-left min-h-[52px] py-4 px-4 rounded-lg border border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover transition-colors text-base text-foreground"
+            onClick={() => handleTap(option.id)}
+            style={{ touchAction: "manipulation" }}
+            className={`w-full text-left min-h-[56px] py-4 px-4 rounded-lg border transition-all duration-150
+              ${
+                tapped === option.id
+                  ? "bg-survey-highlight-bg border-primary scale-[0.97]"
+                  : "border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover"
+              }
+            `}
           >
-            {option.label}
+            <span className="text-base leading-[1.4] text-foreground">
+              {option.label}
+            </span>
           </button>
         ))}
       </div>

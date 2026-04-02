@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface YearSelectProps {
   onSelect: (year: string) => void;
 }
@@ -10,17 +12,31 @@ const years = [
 ];
 
 const YearSelect = ({ onSelect }: YearSelectProps) => {
+  const [tapped, setTapped] = useState<string | null>(null);
+
+  const handleTap = (yearId: string) => {
+    setTapped(yearId);
+    setTimeout(() => onSelect(yearId), 150);
+  };
+
   return (
     <div className="animate-slide-in-left">
-      <h2 className="text-xl font-semibold text-foreground mb-6">
+      <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
         What year are you?
       </h2>
       <div className="grid grid-cols-2 gap-3">
         {years.map((year) => (
           <button
             key={year.id}
-            onClick={() => onSelect(year.id)}
-            className="flex flex-col items-center justify-center min-h-[80px] py-4 px-4 rounded-lg border border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover transition-colors"
+            onClick={() => handleTap(year.id)}
+            style={{ touchAction: "manipulation" }}
+            className={`flex flex-col items-center justify-center min-h-[80px] py-4 px-4 rounded-lg border transition-all duration-150
+              ${
+                tapped === year.id
+                  ? "bg-survey-highlight-bg border-primary scale-[0.97]"
+                  : "border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover"
+              }
+            `}
           >
             <span className="text-base font-medium text-foreground">
               {year.label}
