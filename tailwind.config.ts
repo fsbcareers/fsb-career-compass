@@ -109,8 +109,8 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "slide-in-left": "slide-in-left 0.2s ease-out",
-        "slide-in-right": "slide-in-right 0.2s ease-out",
+        "slide-in-left": "slide-in-left 0.18s ease-out",
+        "slide-in-right": "slide-in-right 0.18s ease-out",
         "fade-in": "fade-in 0.3s ease-out",
         "check-draw": "check-draw 0.5s ease-out forwards",
         shake: "shake 0.4s ease-in-out",
