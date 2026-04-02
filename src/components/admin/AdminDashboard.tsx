@@ -168,7 +168,7 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
               <p className="text-foreground font-medium">No responses yet</p>
               <p className="text-sm text-muted-foreground mt-1">
                 Share the survey link to start collecting data.{" "}
-                <a href="/distribute" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                <a href="/fsb-career-compass/distribute" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                   Distribution tools →
                 </a>
               </p>
