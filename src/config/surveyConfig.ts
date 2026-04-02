@@ -81,6 +81,7 @@ export const surveyConfig = {
     {
       id: "evaluating_offers",
       label: "I have an offer (or multiple) but I'm unsure what to accept",
+      subtitle: "Decision time",
       drilldownQuestion: "What's making the decision difficult?",
       drilldownOptions: [
         { id: "tradeoff_unclear", label: "I'm comparing offers and don't know how to weigh salary vs. learning" },
