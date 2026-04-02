@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/fsb-career-diagnostic/',
+  base: '/fsb-career-compass/',
   server: {
     host: "::",
     port: 8080,

@@ -16,7 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter basename="/fsb-career-diagnostic">
+      <BrowserRouter basename="/fsb-career-compass">
         <Routes>
           <Route path="/" element={<Navigate to="/survey" replace />} />
           <Route path="/survey" element={<Survey />} />
