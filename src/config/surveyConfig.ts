@@ -16,6 +16,7 @@ export const surveyConfig = {
     {
       id: "career_clarity",
       label: "I don't know what kind of role or industry I want",
+      subtitle: "Finding direction",
       drilldownQuestion: "What's making career direction hard to figure out?",
       drilldownOptions: [
         { id: "too_many_interests", label: "I have too many interests and can't narrow down" },
