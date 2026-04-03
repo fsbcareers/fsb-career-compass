@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { fetchSheetData, type FetchResult } from "@/utils/fetchSheetData";
-import type { SurveyResponse } from "@/utils/generateMockData";
+import { generateMockData, type SurveyResponse } from "@/utils/generateMockData";
 import AdminNav from "./AdminNav";
 import MetricCards from "./MetricCards";
 import BottleneckHeatmap from "./BottleneckHeatmap";
@@ -10,7 +10,8 @@ import ResponseTimeline from "./ResponseTimeline";
 import CompactResponses from "./CompactResponses";
 import DateRangeFilter from "./DateRangeFilter";
 import { Skeleton } from "@/components/ui/skeleton";
-import { RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { RefreshCw, FlaskConical, X } from "lucide-react";
 import { format } from "date-fns";
 
 interface AdminDashboardProps {
@@ -20,7 +21,7 @@ interface AdminDashboardProps {
 export type DateFilter = "all" | "semester" | "30days" | "custom";
 
 const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
-  const [data, setData] = useState<SurveyResponse[]>([]);
+  const [realData, setRealData] = useState<SurveyResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [fetchedAt, setFetchedAt] = useState<Date | null>(null);
@@ -29,6 +30,14 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [customRange, setCustomRange] = useState<{ from: string; to: string }>({ from: "", to: "" });
   const [selectedCell, setSelectedCell] = useState<{ year: string; stage: string } | null>(null);
+  const [showSampleData, setShowSampleData] = useState(false);
+
+  const sampleData = useMemo(() => generateMockData(200), []);
+
+  const hasRealData = realData.length > 0;
+  // Show sample data if toggled on, or if there's no real data (auto-show)
+  const usingSampleData = showSampleData || (!hasRealData && !isMock);
+  const displayData = usingSampleData ? sampleData : realData;
 
   const loadData = async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -37,9 +46,13 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
 
     try {
       const result: FetchResult = await fetchSheetData();
-      setData(result.data);
+      setRealData(result.data);
       setFetchedAt(result.fetchedAt);
       setIsMock(result.isMock);
+      // If we got real data back (including forced mock mode), use it directly
+      if (result.isMock) {
+        // USE_MOCK_DATA is on — treat mock as "real" data
+      }
     } catch {
       setFetchError(true);
     } finally {
@@ -52,7 +65,7 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
 
   const filteredData = useMemo(() => {
     const now = new Date();
-    return data.filter((row) => {
+    return displayData.filter((row) => {
       if (!row.timestamp) return dateFilter === "all";
       const ts = new Date(row.timestamp);
       switch (dateFilter) {
@@ -71,7 +84,7 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
           return true;
       }
     });
-  }, [data, dateFilter, customRange]);
+  }, [displayData, dateFilter, customRange]);
 
   if (loading) {
     return (
@@ -90,7 +103,7 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
     );
   }
 
-  if (fetchError && data.length === 0) {
+  if (fetchError && realData.length === 0) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-3">
@@ -106,8 +119,6 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
       </div>
     );
   }
-
-  const isEmpty = data.length === 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -146,6 +157,54 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
 
         <AdminNav />
 
+        {/* Sample data banner */}
+        {usingSampleData && (
+          <div className="mb-6 rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-600 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FlaskConical className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <span className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                  {hasRealData
+                    ? "Viewing sample data — this is not real response data"
+                    : "Showing sample data — no real responses yet"}
+                </span>
+              </div>
+              {hasRealData && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowSampleData(false)}
+                  className="h-7 text-xs border-amber-400 text-amber-800 hover:bg-amber-100 dark:border-amber-600 dark:text-amber-300 dark:hover:bg-amber-900/50"
+                >
+                  <X className="h-3 w-3 mr-1" /> Show real data
+                </Button>
+              )}
+            </div>
+            {!hasRealData && (
+              <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                Share the survey link to start collecting real data.{" "}
+                <Link to="/distribute" className="underline hover:no-underline">
+                  Distribution tools →
+                </Link>
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Toggle to sample data when viewing real data */}
+        {hasRealData && !usingSampleData && (
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowSampleData(true)}
+              className="text-xs text-muted-foreground"
+            >
+              <FlaskConical className="h-3.5 w-3.5 mr-1" /> View with sample data
+            </Button>
+          </div>
+        )}
+
         <div className="space-y-8">
           <MetricCards data={filteredData} />
 
@@ -163,23 +222,9 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
             />
           </div>
 
-          {isEmpty ? (
-            <div className="rounded-lg border border-border p-8 text-center">
-              <p className="text-foreground font-medium">No responses yet</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Share the survey link to start collecting data.{" "}
-                <Link to="/distribute" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                  Distribution tools →
-                </Link>
-              </p>
-            </div>
-          ) : (
-            <>
-              <DrilldownPanel data={filteredData} selectedCell={selectedCell} />
-              <ResponseTimeline data={filteredData} />
-              <CompactResponses data={filteredData} />
-            </>
-          )}
+          <DrilldownPanel data={filteredData} selectedCell={selectedCell} />
+          <ResponseTimeline data={filteredData} />
+          <CompactResponses data={filteredData} />
         </div>
       </div>
     </div>
