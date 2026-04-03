@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { fetchSheetData, type FetchResult } from "@/utils/fetchSheetData";
 import type { SurveyResponse } from "@/utils/generateMockData";
 import AdminNav from "./AdminNav";
@@ -111,7 +112,6 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-[1100px] mx-auto p-4 md:p-8">
-        {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
@@ -168,9 +168,9 @@ const AdminDashboard = ({ onSignOut }: AdminDashboardProps) => {
               <p className="text-foreground font-medium">No responses yet</p>
               <p className="text-sm text-muted-foreground mt-1">
                 Share the survey link to start collecting data.{" "}
-                <a href="/fsb-career-compass/distribute" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                <Link to="/distribute" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                   Distribution tools →
-                </a>
+                </Link>
               </p>
             </div>
           ) : (

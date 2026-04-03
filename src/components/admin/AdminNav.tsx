@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 
 const AdminNav = () => {
@@ -29,14 +29,14 @@ const AdminNav = () => {
       >
         Survey editor →
       </button>
-      <a
-        href="/fsb-career-compass/distribute"
+      <Link
+        to="/distribute"
         target="_blank"
         rel="noopener noreferrer"
         className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
       >
         Distribution tools <ExternalLink className="h-3 w-3" />
-      </a>
+      </Link>
     </nav>
   );
 };
