@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
+import { icons } from "lucide-react";
 
 interface FollowUpQuestionProps {
   questionIndex: number;
@@ -15,6 +16,11 @@ const FollowUpQuestion = ({ questionIndex, onSelect }: FollowUpQuestionProps) =>
     setTimeout(() => onSelect(optionId), 150);
   };
 
+  const getIcon = (iconName: string) => {
+    const IconComponent = icons[iconName as keyof typeof icons];
+    return IconComponent ? <IconComponent size={18} /> : null;
+  };
+
   return (
     <div className="animate-slide-in-left">
       <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
@@ -26,7 +32,7 @@ const FollowUpQuestion = ({ questionIndex, onSelect }: FollowUpQuestionProps) =>
             key={option.id}
             onClick={() => handleTap(option.id)}
             style={{ touchAction: "manipulation" }}
-            className={`w-full text-left min-h-[56px] py-4 px-4 rounded-lg border transition-all duration-150
+            className={`flex items-center w-full text-left min-h-[56px] py-4 px-4 rounded-lg border transition-all duration-150
               ${
                 tapped === option.id
                   ? "bg-survey-highlight-bg border-primary scale-[0.97]"
@@ -34,6 +40,13 @@ const FollowUpQuestion = ({ questionIndex, onSelect }: FollowUpQuestionProps) =>
               }
             `}
           >
+            <span
+              className={`shrink-0 mr-3 transition-colors duration-150 ${
+                tapped === option.id ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {getIcon(option.icon)}
+            </span>
             <span className="text-base leading-[1.4] text-foreground">
               {option.label}
             </span>

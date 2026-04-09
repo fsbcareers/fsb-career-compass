@@ -1,6 +1,12 @@
 import { surveyConfig } from "@/config/surveyConfig";
+import { icons } from "lucide-react";
 
 const QuestionViewer = () => {
+  const getIcon = (iconName: string) => {
+    const IconComponent = icons[iconName as keyof typeof icons];
+    return IconComponent ? <IconComponent size={14} className="inline mr-1" /> : null;
+  };
+
   return (
     <div>
       <h3 className="text-sm font-medium text-foreground mb-1">Survey Configuration</h3>
@@ -12,7 +18,7 @@ const QuestionViewer = () => {
         <h4 className="text-xs uppercase tracking-wider text-muted-foreground">Pipeline Stages</h4>
         {surveyConfig.pipelineStages.map((stage) => (
           <div key={stage.id} className="rounded-lg border border-border p-4">
-            <p className="text-sm font-medium text-foreground">{stage.label}</p>
+            <p className="text-sm font-medium text-foreground">{stage.shortLabel}: {stage.label}</p>
             <p className="text-xs text-muted-foreground mt-1">{stage.drilldownQuestion}</p>
             <ul className="mt-2 space-y-1">
               {stage.drilldownOptions.map((opt) => (
