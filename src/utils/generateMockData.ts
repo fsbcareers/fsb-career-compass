@@ -29,7 +29,8 @@ export function generateMockData(count = 200): SurveyResponse[] {
   const years = ["freshman", "sophomore", "junior", "senior"];
   const yearWeights = [15, 35, 30, 20];
   const stages = surveyConfig.pipelineStages;
-  const stageWeights = [25, 12, 15, 12, 22, 10, 4];
+  // 9 stages: awareness, direction, search, materials, applying, screening, live_interviews, offers, waiting
+  const stageWeights = [20, 10, 14, 10, 18, 8, 8, 6, 6];
   const followUps = surveyConfig.followUpQuestions;
 
   const now = Date.now();
@@ -41,7 +42,6 @@ export function generateMockData(count = 200): SurveyResponse[] {
     const stage = stages[stageIdx];
     const detail = pick(stage.drilldownOptions);
 
-    // question_count: 3 core + 0-5 follow-ups, weighted toward 4-5
     const extraQs = pick([0, 1, 2, 3, 4, 5], [10, 8, 12, 20, 25, 25]);
     const questionCount = 3 + extraQs;
 

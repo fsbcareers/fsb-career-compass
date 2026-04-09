@@ -10,7 +10,21 @@ interface BottleneckHeatmapProps {
 
 const years = ["freshman", "sophomore", "junior", "senior"];
 const yearLabels: Record<string, string> = { freshman: "Freshman", sophomore: "Sophomore", junior: "Junior", senior: "Senior" };
-const shortStageLabels = surveyConfig.pipelineStages.map((s) => s.shortLabel);
+
+const stages = surveyConfig.pipelineStages;
+const buckets = surveyConfig.buckets;
+
+const shortLabels: Record<string, string> = {
+  awareness: "Aware",
+  direction: "Direct",
+  search: "Search",
+  materials: "Mats",
+  applying: "Apply",
+  screening: "Screen",
+  live_interviews: "Live Int",
+  offers: "Offers",
+  waiting: "Wait",
+};
 
 function getCellColor(pct: number): { bg: string; text: string } {
   if (pct === 0) return { bg: "transparent", text: "hsl(var(--muted-foreground))" };
@@ -21,8 +35,6 @@ function getCellColor(pct: number): { bg: string; text: string } {
 }
 
 const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatmapProps) => {
-  const stages = surveyConfig.pipelineStages;
-
   const { grid, yearTotals, colTotals, totalResponses } = useMemo(() => {
     const counts: Record<string, Record<string, number>> = {};
     const yTotals: Record<string, number> = {};
@@ -45,26 +57,41 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
     });
 
     return { grid: counts, yearTotals: yTotals, colTotals: cTotals, totalResponses: data.length };
-  }, [data, stages]);
+  }, [data]);
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm" style={{ borderSpacing: "4px 6px", borderCollapse: "separate" }}>
+      <table className="w-full text-sm" style={{ borderSpacing: "3px 6px", borderCollapse: "separate" }}>
         <thead>
+          {/* Bucket group headers */}
           <tr>
-            <th className="px-3 py-2 text-left text-xs text-muted-foreground font-normal" />
-            {stages.map((s, i) => (
-              <th key={s.id} className="px-3 py-2 text-center text-xs text-muted-foreground font-normal min-w-[85px]">
-                {shortStageLabels[i]}
+            <th />
+            {buckets.map((b) => (
+              <th
+                key={b.id}
+                colSpan={b.stages.length}
+                className="px-1 pt-2 pb-1 text-center text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-normal border-b border-border"
+              >
+                {b.label}
               </th>
             ))}
-            <th className="px-3 py-2 text-center text-xs text-muted-foreground font-normal">n</th>
+            <th />
+          </tr>
+          {/* Individual stage columns */}
+          <tr>
+            <th className="px-2 py-2 text-left text-xs text-muted-foreground font-normal" />
+            {stages.map((s) => (
+              <th key={s.id} className="px-2 py-2 text-center text-xs text-muted-foreground font-normal min-w-[60px]">
+                {shortLabels[s.id] || s.shortLabel}
+              </th>
+            ))}
+            <th className="px-2 py-2 text-center text-xs text-muted-foreground font-normal">n</th>
           </tr>
         </thead>
         <tbody>
           {years.map((y) => (
             <tr key={y}>
-              <td className="px-3 py-2.5 text-sm font-medium text-foreground">{yearLabels[y]}</td>
+              <td className="px-2 py-2.5 text-sm font-medium text-foreground whitespace-nowrap">{yearLabels[y]}</td>
               {stages.map((s) => {
                 const count = grid[y][s.id];
                 const pct = yearTotals[y] ? Math.round((count / yearTotals[y]) * 100) : 0;
@@ -73,10 +100,8 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
                 return (
                   <td
                     key={s.id}
-                    onClick={() =>
-                      onCellSelect(isSelected ? null : { year: y, stage: s.id })
-                    }
-                    className={`px-3 py-2.5 text-center cursor-pointer rounded-md transition-all ${
+                    onClick={() => onCellSelect(isSelected ? null : { year: y, stage: s.id })}
+                    className={`px-2 py-2.5 text-center cursor-pointer rounded-md transition-all ${
                       isSelected ? "ring-2 ring-ring ring-offset-2" : ""
                     }`}
                     style={{ backgroundColor: bg, color: text }}
@@ -85,24 +110,20 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
                   </td>
                 );
               })}
-              <td className="px-3 py-2.5 text-center text-xs text-muted-foreground">n={yearTotals[y]}</td>
+              <td className="px-2 py-2.5 text-center text-xs text-muted-foreground">n={yearTotals[y]}</td>
             </tr>
           ))}
           <tr>
-            <td className="px-3 pt-4 pb-2 text-xs text-muted-foreground border-t border-border" colSpan={stages.length + 2}>
-              <div className="flex items-center">
-                <span className="w-[85px] shrink-0">Overall</span>
-                <div className="flex flex-1">
-                  {stages.map((s) => {
-                    const pct = totalResponses ? Math.round((colTotals[s.id] / totalResponses) * 100) : 0;
-                    return (
-                      <span key={s.id} className="flex-1 text-center">{pct}%</span>
-                    );
-                  })}
-                  <span className="w-[85px] text-center shrink-0">n={totalResponses}</span>
-                </div>
-              </div>
-            </td>
+            <td className="px-2 pt-4 pb-2 text-xs text-muted-foreground border-t border-border">Overall</td>
+            {stages.map((s) => {
+              const pct = totalResponses ? Math.round((colTotals[s.id] / totalResponses) * 100) : 0;
+              return (
+                <td key={s.id} className="px-2 pt-4 pb-2 text-center text-xs text-muted-foreground border-t border-border">
+                  {pct}%
+                </td>
+              );
+            })}
+            <td className="px-2 pt-4 pb-2 text-center text-xs text-muted-foreground border-t border-border">n={totalResponses}</td>
           </tr>
         </tbody>
       </table>
