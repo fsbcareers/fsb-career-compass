@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { surveyConfig, type PipelineStage } from "@/config/surveyConfig";
 import { icons } from "lucide-react";
+import { adaptText } from "@/utils/seniorText";
 
 interface DrilldownSelectProps {
   stageId: string;
   onSelect: (optionId: string) => void;
+  classYear?: string;
 }
 
-const DrilldownSelect = ({ stageId, onSelect }: DrilldownSelectProps) => {
+const DrilldownSelect = ({ stageId, onSelect, classYear }: DrilldownSelectProps) => {
   const stage = surveyConfig.pipelineStages.find((s) => s.id === stageId) as PipelineStage;
   const [tapped, setTapped] = useState<string | null>(null);
 
@@ -24,7 +26,7 @@ const DrilldownSelect = ({ stageId, onSelect }: DrilldownSelectProps) => {
   return (
     <div className="animate-slide-in-left">
       <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
-        {stage.drilldownQuestion}
+        {adaptText(stage.drilldownQuestion, classYear)}
       </h2>
       <div className="flex flex-col gap-[10px]">
         {stage.drilldownOptions.map((option) => (
@@ -48,7 +50,7 @@ const DrilldownSelect = ({ stageId, onSelect }: DrilldownSelectProps) => {
               {getIcon(option.icon)}
             </span>
             <span className="text-base leading-[1.4] text-foreground">
-              {option.label}
+              {adaptText(option.label, classYear)}
             </span>
           </button>
         ))}

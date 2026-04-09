@@ -1,11 +1,13 @@
 import { surveyConfig } from "@/config/surveyConfig";
+import { adaptText } from "@/utils/seniorText";
 
 interface ConfirmationProps {
   stageId: string;
   onRestart: () => void;
+  classYear?: string;
 }
 
-const Confirmation = ({ stageId, onRestart }: ConfirmationProps) => {
+const Confirmation = ({ stageId, onRestart, classYear }: ConfirmationProps) => {
   const stage = surveyConfig.pipelineStages.find((s) => s.id === stageId);
 
   return (
@@ -35,7 +37,7 @@ const Confirmation = ({ stageId, onRestart }: ConfirmationProps) => {
 
       {stage && (
         <p className="text-base text-survey-subtitle mb-8 leading-[1.4]">
-          {stage.resourceNudge}
+          {adaptText(stage.resourceNudge, classYear)}
         </p>
       )}
 

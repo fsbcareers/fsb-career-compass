@@ -2,12 +2,14 @@ import { useState, useRef } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
 import { icons } from "lucide-react";
 import { ChevronRight } from "lucide-react";
+import { adaptText } from "@/utils/seniorText";
 
 interface StageSelectProps {
   onSelect: (stageId: string) => void;
+  classYear?: string;
 }
 
-const StageSelect = ({ onSelect }: StageSelectProps) => {
+const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
   const [expandedBucket, setExpandedBucket] = useState<string | null>(null);
   const [tapped, setTapped] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,11 +29,13 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
   };
 
   const buckets = surveyConfig.buckets;
+  const isSenior = classYear === "senior";
+  const journeyWord = isSenior ? "job" : "internship";
 
   return (
     <div ref={containerRef} className="animate-slide-in-left">
       <p className="text-xs uppercase tracking-[0.15em] text-survey-subtitle mb-1">
-        The internship journey
+        The {journeyWord} journey
       </p>
       <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
         Where are you getting stuck?
@@ -40,6 +44,13 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
       <div className="relative">
         {/* Timeline line */}
         <div className="absolute left-[15px] top-[28px] bottom-[28px] w-[2px] bg-survey-pipeline-line" />
+
+        {/* Timeline start label */}
+        <div className="flex items-center pl-[6px] mb-2">
+          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+            Beginning
+          </span>
+        </div>
 
         <div className="flex flex-col gap-[6px]">
           {buckets.map((bucket, bucketIdx) => {
@@ -146,7 +157,7 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
                           {getIcon(stage.icon, 18)}
                         </span>
                         <span className="flex-1 text-[15px] leading-[1.4] text-foreground">
-                          {stage.label}
+                          {adaptText(stage.label, classYear)}
                         </span>
                         <ChevronRight
                           size={14}
@@ -161,13 +172,10 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
           })}
         </div>
 
-        {/* Timeline endpoints */}
-        <div className="flex items-center justify-between pl-[6px] mt-3">
+        {/* Timeline end label */}
+        <div className="flex items-center pl-[6px] mt-2">
           <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-            Beginning
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mr-2">
-            End
+            End — {isSenior ? "Job" : "Internship"} secured 🎉
           </span>
         </div>
       </div>

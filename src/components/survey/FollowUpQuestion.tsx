@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
 import { icons } from "lucide-react";
+import { adaptText } from "@/utils/seniorText";
 
 interface FollowUpQuestionProps {
   questionIndex: number;
   onSelect: (optionId: string) => void;
+  classYear?: string;
 }
 
-const FollowUpQuestion = ({ questionIndex, onSelect }: FollowUpQuestionProps) => {
+const FollowUpQuestion = ({ questionIndex, onSelect, classYear }: FollowUpQuestionProps) => {
   const question = surveyConfig.followUpQuestions[questionIndex];
   const [tapped, setTapped] = useState<string | null>(null);
 
@@ -24,7 +26,7 @@ const FollowUpQuestion = ({ questionIndex, onSelect }: FollowUpQuestionProps) =>
   return (
     <div className="animate-slide-in-left">
       <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
-        {question.question}
+        {adaptText(question.question, classYear)}
       </h2>
       <div className="flex flex-col gap-[10px]">
         {question.options.map((option) => (
@@ -48,7 +50,7 @@ const FollowUpQuestion = ({ questionIndex, onSelect }: FollowUpQuestionProps) =>
               {getIcon(option.icon)}
             </span>
             <span className="text-base leading-[1.4] text-foreground">
-              {option.label}
+              {adaptText(option.label, classYear)}
             </span>
           </button>
         ))}
