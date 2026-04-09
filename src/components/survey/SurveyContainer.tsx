@@ -146,7 +146,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
             {screen === "year" && <YearSelect onSelect={handleYear} />}
             {screen === "stage" && <StageSelect onSelect={handleStage} classYear={classYear} />}
             {screen === "drilldown" && (
-              <DrilldownSelect stageId={stageId} onSelect={handleDrilldown} />
+              <DrilldownSelect stageId={stageId} onSelect={handleDrilldown} classYear={classYear} />
             )}
             {screen === "continue_prompt" && (
               <div>
@@ -162,10 +162,11 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
               <FollowUpQuestion
                 questionIndex={followUpIndex}
                 onSelect={handleFollowUp}
+                classYear={classYear}
               />
             )}
             {screen === "confirmation" && (
-              <Confirmation stageId={stageId} onRestart={handleRestart} />
+              <Confirmation stageId={stageId} onRestart={handleRestart} classYear={classYear} />
             )}
           </div>
         </div>
