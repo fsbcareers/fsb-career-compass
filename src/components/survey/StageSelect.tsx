@@ -171,13 +171,10 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
           })}
         </div>
 
-        {/* Timeline endpoints */}
-        <div className="flex items-center justify-between pl-[6px] mt-3">
+        {/* Timeline end label */}
+        <div className="flex items-center pl-[6px] mt-2">
           <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-            Beginning
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mr-2">
-            End
+            End — {isSenior ? "Job" : "Internship"} secured 🎉
           </span>
         </div>
       </div>

@@ -144,7 +144,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
           )}
           <div key={`${screen}-${followUpIndex}`} className={screen === "confirmation" ? "" : animationClass}>
             {screen === "year" && <YearSelect onSelect={handleYear} />}
-            {screen === "stage" && <StageSelect onSelect={handleStage} />}
+            {screen === "stage" && <StageSelect onSelect={handleStage} classYear={classYear} />}
             {screen === "drilldown" && (
               <DrilldownSelect stageId={stageId} onSelect={handleDrilldown} />
             )}
