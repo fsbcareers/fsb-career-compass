@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
 import { icons } from "lucide-react";
 import { ChevronRight } from "lucide-react";
+import { adaptText } from "@/utils/seniorText";
 
 interface StageSelectProps {
   onSelect: (stageId: string) => void;
