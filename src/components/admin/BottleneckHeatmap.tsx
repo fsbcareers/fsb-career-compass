@@ -10,7 +10,7 @@ interface BottleneckHeatmapProps {
 
 const years = ["freshman", "sophomore", "junior", "senior"];
 const yearLabels: Record<string, string> = { freshman: "Freshman", sophomore: "Sophomore", junior: "Junior", senior: "Senior" };
-const shortStageLabels = ["Not started", "Career clarity", "Finding opps", "Materials", "Responses", "Interviews", "Offers"];
+const shortStageLabels = surveyConfig.pipelineStages.map((s) => s.shortLabel);
 
 function getCellColor(pct: number): { bg: string; text: string } {
   if (pct === 0) return { bg: "transparent", text: "hsl(var(--muted-foreground))" };
