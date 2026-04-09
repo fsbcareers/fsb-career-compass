@@ -1,4 +1,35 @@
 export const surveyConfig = {
+  buckets: [
+    {
+      id: "getting_started",
+      label: "Getting started",
+      description: "Figuring out what I want and where to begin",
+      icon: "Compass",
+      stages: ["awareness", "direction"],
+    },
+    {
+      id: "applying",
+      label: "Applying",
+      description: "Searching, building materials, and submitting applications",
+      icon: "Send",
+      stages: ["search", "materials", "applying"],
+    },
+    {
+      id: "interviewing",
+      label: "Interviewing",
+      description: "Preparing for and going through interviews",
+      icon: "MessageSquare",
+      stages: ["screening", "live_interviews"],
+    },
+    {
+      id: "getting_offer",
+      label: "Getting the offer",
+      description: "Navigating offers, decisions, and next steps",
+      icon: "Trophy",
+      stages: ["offers", "waiting"],
+    },
+  ],
+
   pipelineStages: [
     {
       id: "awareness",
@@ -44,7 +75,7 @@ export const surveyConfig = {
     },
     {
       id: "materials",
-      label: "I'm trying to apply but my resume and materials aren't there yet",
+      label: "My resume and materials aren't application ready",
       shortLabel: "Materials",
       icon: "FileText",
       drilldownQuestion: "What specifically isn't ready?",
@@ -58,9 +89,9 @@ export const surveyConfig = {
     },
     {
       id: "applying",
-      label: "I'm sending out applications but not getting any responses",
+      label: "I'm submitting applications but not hearing back",
       shortLabel: "Applying",
-      icon: "Send",
+      icon: "Inbox",
       drilldownQuestion: "What best describes your situation?",
       drilldownOptions: [
         { id: "few_apps", label: "I've only applied to a handful of places and need to do more", icon: "ArrowUp" },
@@ -71,25 +102,38 @@ export const surveyConfig = {
       resourceNudge: "If you're applying and not hearing back, it's usually a targeting or materials issue, not a you issue. A 15-minute application review can diagnose it.",
     },
     {
-      id: "interviewing",
-      label: "I'm getting interviews but not landing offers",
-      shortLabel: "Interviews",
-      icon: "MessageSquare",
-      drilldownQuestion: "Where in the interview process does it break down?",
+      id: "screening",
+      label: "I'm getting screening or HireVue invites but not advancing",
+      shortLabel: "Screening",
+      icon: "Video",
+      drilldownQuestion: "What's happening with your screening interviews?",
       drilldownOptions: [
-        { id: "nerves", label: "I get so nervous that I can't think clearly or communicate well", icon: "HeartPulse" },
-        { id: "behavioral_qs", label: "I freeze on behavioral questions like 'tell me about a time when...'", icon: "MessageCircle" },
-        { id: "technical_qs", label: "I struggle with case studies, technical questions, or skills assessments", icon: "Code" },
-        { id: "video_interviews", label: "I submit video or HireVue interviews and never hear back", icon: "Video" },
-        { id: "final_rounds", label: "I do well in early rounds but get cut in final interviews", icon: "ArrowRight" },
+        { id: "hirevue_ghosted", label: "I complete HireVue or video interviews but never hear back", icon: "VideoOff" },
+        { id: "phone_screen_stuck", label: "I get phone screens but can't seem to advance to the next round", icon: "PhoneOff" },
+        { id: "hirevue_prep", label: "I don't know how to prepare for recorded video interviews", icon: "HelpCircle" },
+        { id: "assessment_filtered", label: "I keep getting screened out by automated assessments or tests", icon: "XCircle" },
       ],
-      resourceNudge: "Mock interviews happen every week. Students who do even one mock before a real interview perform significantly better.",
+      resourceNudge: "Video interviews feel unnatural for everyone. The career center has HireVue practice tools and tips that make a real difference.",
+    },
+    {
+      id: "live_interviews",
+      label: "I'm doing live interviews but not getting offers",
+      shortLabel: "Live Int",
+      icon: "MessageSquare",
+      drilldownQuestion: "Where in live interviews are things breaking down?",
+      drilldownOptions: [
+        { id: "nerves", label: "I get nervous and can't communicate clearly under pressure", icon: "HeartPulse" },
+        { id: "behavioral_weak", label: "I struggle with behavioral questions like 'tell me about a time...'", icon: "MessageCircle" },
+        { id: "technical_weak", label: "I can't handle case studies or technical questions well", icon: "Code" },
+        { id: "final_round_rejected", label: "I make it to final rounds but keep getting rejected at the end", icon: "ArrowRight" },
+      ],
+      resourceNudge: "Mock interviews happen every week. Students who do even one practice run perform significantly better in the real thing.",
     },
     {
       id: "offers",
       label: "I have an offer but I'm not sure it's the right one",
       shortLabel: "Offers",
-      icon: "CheckCircle",
+      icon: "Scale",
       drilldownQuestion: "What's making the decision hard?",
       drilldownOptions: [
         { id: "comparing", label: "I'm comparing multiple offers and don't know how to evaluate the tradeoffs", icon: "Scale" },
@@ -98,6 +142,20 @@ export const surveyConfig = {
         { id: "location_comp", label: "The location or compensation isn't what I expected", icon: "MapPin" },
       ],
       resourceNudge: "Don't decide alone. A career advisor can walk you through an offer evaluation in one meeting. Book one before your deadline.",
+    },
+    {
+      id: "waiting",
+      label: "I'm waiting to hear back and don't know what to do in the meantime",
+      shortLabel: "Waiting",
+      icon: "Clock",
+      drilldownQuestion: "What's making the waiting period hard?",
+      drilldownOptions: [
+        { id: "ghosted_after_interview", label: "I interviewed weeks ago and haven't heard anything", icon: "Clock" },
+        { id: "unsure_keep_applying", label: "I don't know if I should keep applying while I wait", icon: "HelpCircle" },
+        { id: "stalled_process", label: "I've been told I'm 'in consideration' but nothing moves forward", icon: "Pause" },
+        { id: "anxiety", label: "I'm anxious and it's affecting my ability to focus on other things", icon: "CloudRain" },
+      ],
+      resourceNudge: "The waiting is the hardest part. Keep applying while you wait. A career advisor can help you manage the process so you're not putting all your eggs in one basket.",
     },
   ],
 
@@ -165,5 +223,6 @@ export const surveyConfig = {
   ],
 };
 
+export type Bucket = (typeof surveyConfig.buckets)[number];
 export type PipelineStage = (typeof surveyConfig.pipelineStages)[number];
 export type FollowUpQuestion = (typeof surveyConfig.followUpQuestions)[number];
