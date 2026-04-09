@@ -8,7 +8,7 @@ interface StageSelectProps {
   classYear?: string;
 }
 
-const StageSelect = ({ onSelect }: StageSelectProps) => {
+const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
   const [expandedBucket, setExpandedBucket] = useState<string | null>(null);
   const [tapped, setTapped] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
