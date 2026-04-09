@@ -157,7 +157,7 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
                           {getIcon(stage.icon, 18)}
                         </span>
                         <span className="flex-1 text-[15px] leading-[1.4] text-foreground">
-                          {stage.label}
+                          {adaptText(stage.label, classYear)}
                         </span>
                         <ChevronRight
                           size={14}
