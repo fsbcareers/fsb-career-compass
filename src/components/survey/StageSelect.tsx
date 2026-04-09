@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
 import { icons } from "lucide-react";
-import { ChevronRight, ArrowLeft } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 interface StageSelectProps {
   onSelect: (stageId: string) => void;
 }
 
 const StageSelect = ({ onSelect }: StageSelectProps) => {
-  const [selectedBucket, setSelectedBucket] = useState<string | null>(null);
+  const [expandedBucket, setExpandedBucket] = useState<string | null>(null);
   const [tapped, setTapped] = useState<string | null>(null);
-  const [animating, setAnimating] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const getIcon = (iconName: string, size = 20) => {
     const IconComponent = icons[iconName as keyof typeof icons];
@@ -18,19 +18,7 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
   };
 
   const handleBucketTap = (bucketId: string) => {
-    setAnimating(true);
-    setTimeout(() => {
-      setSelectedBucket(bucketId);
-      setAnimating(false);
-    }, 150);
-  };
-
-  const handleBack = () => {
-    setAnimating(true);
-    setTimeout(() => {
-      setSelectedBucket(null);
-      setAnimating(false);
-    }, 150);
+    setExpandedBucket((prev) => (prev === bucketId ? null : bucketId));
   };
 
   const handleStageTap = (stageId: string) => {
@@ -38,112 +26,150 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
     setTimeout(() => onSelect(stageId), 150);
   };
 
-  const bucket = selectedBucket
-    ? surveyConfig.buckets.find((b) => b.id === selectedBucket)
-    : null;
+  const buckets = surveyConfig.buckets;
 
-  const bucketStages = bucket
-    ? bucket.stages.map((sid) =>
-        surveyConfig.pipelineStages.find((s) => s.id === sid)!
-      )
-    : [];
-
-  // Screen 2a — Bucket grid
-  if (!selectedBucket) {
-    return (
-      <div className={animating ? "opacity-0 transition-opacity duration-150" : "animate-fade-in"}>
-        <p className="text-xs uppercase tracking-[0.15em] text-survey-subtitle mb-1">
-          The internship journey
-        </p>
-        <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
-          Where are you getting stuck?
-        </h2>
-
-        <div className="grid grid-cols-2 gap-3">
-          {surveyConfig.buckets.map((b) => (
-            <button
-              key={b.id}
-              onClick={() => handleBucketTap(b.id)}
-              style={{ touchAction: "manipulation" }}
-              className="flex flex-col items-center text-center p-5 rounded-lg border border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover transition-all duration-150 active:scale-[0.97]"
-            >
-              <span className="text-primary mb-3">
-                {getIcon(b.icon, 28)}
-              </span>
-              <span className="text-base font-semibold text-foreground leading-[1.3] mb-1">
-                {b.label}
-              </span>
-              <span className="text-[13px] leading-[1.4] text-muted-foreground">
-                {b.description}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Screen 2b — Sub-options within selected bucket
   return (
-    <div className={animating ? "opacity-0 transition-opacity duration-150" : "animate-fade-in"}>
-      {/* Compact bucket header */}
-      <button
-        onClick={handleBack}
-        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-5"
-      >
-        <ArrowLeft size={14} />
-        <span>Change</span>
-      </button>
-
-      <div className="flex items-center gap-3 mb-5 pb-4 border-b border-border">
-        <span className="text-primary">{getIcon(bucket!.icon, 22)}</span>
-        <div>
-          <p className="text-base font-semibold text-foreground leading-[1.3]">
-            {bucket!.label}
-          </p>
-          <p className="text-[13px] text-muted-foreground leading-[1.3]">
-            {bucket!.description}
-          </p>
-        </div>
-      </div>
-
-      <p className="text-sm text-muted-foreground mb-3">
-        Which best describes where you're stuck?
+    <div ref={containerRef} className="animate-slide-in-left">
+      <p className="text-xs uppercase tracking-[0.15em] text-survey-subtitle mb-1">
+        The internship journey
       </p>
+      <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
+        Where are you getting stuck?
+      </h2>
 
-      <div className="flex flex-col gap-[10px]">
-        {bucketStages.map((stage, idx) => (
-          <button
-            key={stage.id}
-            onClick={() => handleStageTap(stage.id)}
-            style={{
-              touchAction: "manipulation",
-              animationDelay: `${idx * 50}ms`,
-            }}
-            className={`flex items-center w-full text-left min-h-[56px] py-4 px-4 rounded-lg border transition-all duration-150 animate-fade-in opacity-0 [animation-fill-mode:forwards]
-              ${
-                tapped === stage.id
-                  ? "bg-survey-highlight-bg border-primary scale-[0.97]"
-                  : "border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover"
-              }
-            `}
-          >
-            <span
-              className={`shrink-0 mr-3 transition-colors duration-150 ${
-                tapped === stage.id ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              {getIcon(stage.icon)}
-            </span>
-            <span className="flex-1 text-base leading-[1.4] text-foreground">
-              {stage.label}
-            </span>
-            <ChevronRight
-              size={16}
-              className="shrink-0 ml-2 text-muted-foreground"
-            />
-          </button>
-        ))}
+      <div className="relative">
+        {/* Timeline line */}
+        <div className="absolute left-[15px] top-[28px] bottom-[28px] w-[2px] bg-survey-pipeline-line" />
+
+        <div className="flex flex-col gap-[6px]">
+          {buckets.map((bucket, bucketIdx) => {
+            const isExpanded = expandedBucket === bucket.id;
+            const bucketStages = bucket.stages.map((sid) =>
+              surveyConfig.pipelineStages.find((s) => s.id === sid)!
+            );
+
+            return (
+              <div key={bucket.id} className="relative">
+                {/* Bucket card */}
+                <button
+                  onClick={() => handleBucketTap(bucket.id)}
+                  style={{ touchAction: "manipulation" }}
+                  className={`relative flex items-center w-full min-h-[56px] py-3 pl-[42px] pr-3 rounded-lg border transition-all duration-200 text-left
+                    ${
+                      isExpanded
+                        ? "bg-survey-highlight-bg border-primary"
+                        : expandedBucket && !isExpanded
+                        ? "bg-survey-button-bg border-survey-button-border opacity-60"
+                        : "bg-survey-button-bg border-survey-button-border hover:bg-survey-highlight-bg"
+                    }
+                  `}
+                >
+                  {/* Timeline dot */}
+                  <div
+                    className={`absolute left-[9px] top-1/2 -translate-y-1/2 w-[12px] h-[12px] rounded-full border-2 transition-all duration-200
+                      ${
+                        isExpanded
+                          ? "bg-primary border-primary scale-125"
+                          : "bg-survey-button-bg border-survey-pipeline-dot"
+                      }
+                    `}
+                  />
+
+                  {/* Icon */}
+                  <span
+                    className={`shrink-0 mr-3 transition-colors duration-150 ${
+                      isExpanded ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    {getIcon(bucket.icon, 22)}
+                  </span>
+
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <span className="text-base font-semibold leading-[1.3] text-foreground block">
+                      {bucket.label}
+                    </span>
+                    {!isExpanded && (
+                      <span className="text-[13px] leading-[1.4] text-muted-foreground block mt-0.5">
+                        {bucket.description}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Expand indicator */}
+                  <ChevronRight
+                    size={16}
+                    className={`shrink-0 ml-2 text-muted-foreground transition-transform duration-200 ${
+                      isExpanded ? "rotate-90" : ""
+                    }`}
+                  />
+                </button>
+
+                {/* Expanded sub-options */}
+                <div
+                  className={`overflow-hidden transition-all duration-200 ease-out ${
+                    isExpanded ? "max-h-[500px] opacity-100 mt-[6px]" : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <div className="pl-[30px] flex flex-col gap-[8px]">
+                    {bucketStages.map((stage, idx) => (
+                      <button
+                        key={stage.id}
+                        onClick={() => handleStageTap(stage.id)}
+                        style={{
+                          touchAction: "manipulation",
+                          transitionDelay: isExpanded ? `${idx * 50}ms` : "0ms",
+                        }}
+                        className={`relative flex items-center w-full text-left min-h-[56px] py-3 px-4 rounded-lg border transition-all duration-150
+                          ${
+                            isExpanded
+                              ? "translate-y-0 opacity-100"
+                              : "translate-y-2 opacity-0"
+                          }
+                          ${
+                            tapped === stage.id
+                              ? "bg-survey-highlight-bg border-primary scale-[0.97]"
+                              : "border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover"
+                          }
+                        `}
+                      >
+                        {/* Mini connector dot */}
+                        <div className="absolute -left-[17px] top-1/2 -translate-y-1/2 w-[6px] h-[6px] rounded-full bg-survey-pipeline-dot opacity-40" />
+
+                        <span
+                          className={`shrink-0 mr-3 transition-colors duration-150 ${
+                            tapped === stage.id
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {getIcon(stage.icon, 18)}
+                        </span>
+                        <span className="flex-1 text-[15px] leading-[1.4] text-foreground">
+                          {stage.label}
+                        </span>
+                        <ChevronRight
+                          size={14}
+                          className="shrink-0 ml-2 text-muted-foreground"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Timeline endpoints */}
+        <div className="flex items-center justify-between pl-[6px] mt-3">
+          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+            Beginning
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mr-2">
+            End
+          </span>
+        </div>
       </div>
     </div>
   );
