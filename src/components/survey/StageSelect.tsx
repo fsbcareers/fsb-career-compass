@@ -28,11 +28,13 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
   };
 
   const buckets = surveyConfig.buckets;
+  const isSenior = classYear === "senior";
+  const journeyWord = isSenior ? "job" : "internship";
 
   return (
     <div ref={containerRef} className="animate-slide-in-left">
       <p className="text-xs uppercase tracking-[0.15em] text-survey-subtitle mb-1">
-        The internship journey
+        The {journeyWord} journey
       </p>
       <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
         Where are you getting stuck?
@@ -41,6 +43,13 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
       <div className="relative">
         {/* Timeline line */}
         <div className="absolute left-[15px] top-[28px] bottom-[28px] w-[2px] bg-survey-pipeline-line" />
+
+        {/* Timeline start label */}
+        <div className="flex items-center pl-[6px] mb-2">
+          <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+            Beginning
+          </span>
+        </div>
 
         <div className="flex flex-col gap-[6px]">
           {buckets.map((bucket, bucketIdx) => {
