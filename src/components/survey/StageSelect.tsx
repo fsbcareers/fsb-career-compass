@@ -1,29 +1,11 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
-import {
-  Flag,
-  Compass,
-  Search,
-  FileText,
-  Send,
-  MessageSquare,
-  CheckCircle,
-  ChevronRight,
-} from "lucide-react";
+import { icons } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 interface StageSelectProps {
   onSelect: (stageId: string) => void;
 }
-
-const stageIcons: Record<string, React.ReactNode> = {
-  not_started: <Flag size={20} />,
-  career_clarity: <Compass size={20} />,
-  finding_opportunities: <Search size={20} />,
-  application_materials: <FileText size={20} />,
-  getting_responses: <Send size={20} />,
-  interview_performance: <MessageSquare size={20} />,
-  evaluating_offers: <CheckCircle size={20} />,
-};
 
 const StageSelect = ({ onSelect }: StageSelectProps) => {
   const [tapped, setTapped] = useState<string | null>(null);
@@ -31,6 +13,11 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
   const handleTap = (stageId: string) => {
     setTapped(stageId);
     setTimeout(() => onSelect(stageId), 150);
+  };
+
+  const getIcon = (iconName: string) => {
+    const IconComponent = icons[iconName as keyof typeof icons];
+    return IconComponent ? <IconComponent size={20} /> : null;
   };
 
   return (
@@ -79,7 +66,7 @@ const StageSelect = ({ onSelect }: StageSelectProps) => {
                     : "text-muted-foreground"
                 }`}
               >
-                {stageIcons[stage.id]}
+                {getIcon(stage.icon)}
               </span>
 
               {/* Text */}
