@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 
 interface StageSelectProps {
   onSelect: (stageId: string) => void;
+  classYear?: string;
 }
 
 const StageSelect = ({ onSelect }: StageSelectProps) => {
