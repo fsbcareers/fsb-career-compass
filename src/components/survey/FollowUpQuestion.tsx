@@ -1,17 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
-import { icons } from "lucide-react";
+import { icons, CheckCircle } from "lucide-react";
 import { adaptText } from "@/utils/seniorText";
 
 interface FollowUpQuestionProps {
   questionIndex: number;
   onSelect: (optionId: string) => void;
   classYear?: string;
+  showEncouragement?: boolean;
+  onEncouragementShown?: () => void;
 }
 
-const FollowUpQuestion = ({ questionIndex, onSelect, classYear }: FollowUpQuestionProps) => {
+const FollowUpQuestion = ({
+  questionIndex,
+  onSelect,
+  classYear,
+  showEncouragement,
+  onEncouragementShown,
+}: FollowUpQuestionProps) => {
   const question = surveyConfig.followUpQuestions[questionIndex];
   const [tapped, setTapped] = useState<string | null>(null);
+  const [bannerVisible, setBannerVisible] = useState(false);
+
+  useEffect(() => {
+    if (showEncouragement) {
+      setBannerVisible(true);
+      onEncouragementShown?.();
+      const timer = setTimeout(() => setBannerVisible(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showEncouragement, onEncouragementShown]);
 
   const handleTap = (optionId: string) => {
     setTapped(optionId);
@@ -25,6 +43,16 @@ const FollowUpQuestion = ({ questionIndex, onSelect, classYear }: FollowUpQuesti
 
   return (
     <div className="animate-slide-in-left">
+      {bannerVisible && (
+        <div className="mb-4 animate-fade-in">
+          <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-survey-highlight-bg">
+            <CheckCircle size={18} className="shrink-0 text-survey-highlight-text" />
+            <p className="text-sm font-medium text-survey-highlight-text leading-[1.4]">
+              Great — that helps a lot. One more quick one!
+            </p>
+          </div>
+        </div>
+      )}
       <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
         {adaptText(question.question, classYear)}
       </h2>

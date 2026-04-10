@@ -81,7 +81,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const handleDrilldown = (optionId: string) => {
     setQuestionCount((c) => Math.max(c, 3));
     setShowEncouragement(true);
-    pushScreen("continue_prompt");
+    pushScreen("follow_up");
     saveAnswer(rowId, "bottleneck_detail", optionId);
   };
 
@@ -98,22 +98,9 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
       pushScreen("confirmation");
     } else {
       setFollowUpIndex(nextIndex);
-      if (nextIndex === MAX_FOLLOW_UPS - 1) {
-        pushScreen("follow_up");
-      } else {
-        pushScreen("continue_prompt");
-      }
+      setShowEncouragement(true);
+      pushScreen("follow_up");
     }
-  };
-
-  const handleContinue = () => {
-    setShowEncouragement(false);
-    pushScreen("follow_up");
-  };
-
-  const handleDone = () => {
-    saveAnswer(rowId, "question_count", questionCount.toString());
-    pushScreen("confirmation");
   };
 
   const handleRestart = () => {
@@ -147,21 +134,13 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
             {screen === "drilldown" && (
               <DrilldownSelect stageId={stageId} onSelect={handleDrilldown} classYear={classYear} />
             )}
-            {screen === "continue_prompt" && (
-              <div>
-                {showEncouragement && <EncouragingMessage />}
-                <ContinuePrompt
-                  prompt={surveyConfig.continuePrompts[Math.min(followUpIndex, surveyConfig.continuePrompts.length - 1)]}
-                  onContinue={handleContinue}
-                  onDone={handleDone}
-                />
-              </div>
-            )}
             {screen === "follow_up" && (
               <FollowUpQuestion
                 questionIndex={followUpIndex}
                 onSelect={handleFollowUp}
                 classYear={classYear}
+                showEncouragement={showEncouragement}
+                onEncouragementShown={() => setShowEncouragement(false)}
               />
             )}
             {screen === "confirmation" && (
