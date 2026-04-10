@@ -15,7 +15,6 @@ type Screen =
   | "year"
   | "stage"
   | "drilldown"
-  | "continue_prompt"
   | "follow_up"
   | "confirmation";
 
