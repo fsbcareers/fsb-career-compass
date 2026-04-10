@@ -37,6 +37,22 @@ export const surveyConfig = {
       shortLabel: "Awareness",
       icon: "Lightbulb",
       drilldownQuestion: "What's closest to your situation?",
+      drilldownBuckets: [
+        {
+          id: "didnt_know",
+          label: "I didn't know",
+          description: "I wasn't aware this mattered yet",
+          icon: "AlertCircle",
+          options: ["didnt_know_important", "too_early"],
+        },
+        {
+          id: "focused_elsewhere",
+          label: "Focused on other things",
+          description: "I had other priorities",
+          icon: "BookOpen",
+          options: ["focused_grades", "no_pressure"],
+        },
+      ],
       drilldownOptions: [
         { id: "didnt_know_important", label: "Nobody told me internships were this important for getting hired after graduation", icon: "AlertCircle" },
         { id: "too_early", label: "I figured internships were a junior or senior year thing", icon: "Clock" },
@@ -51,6 +67,22 @@ export const surveyConfig = {
       shortLabel: "Direction",
       icon: "Compass",
       drilldownQuestion: "What makes picking a direction hard?",
+      drilldownBuckets: [
+        {
+          id: "too_many_choices",
+          label: "Too many choices",
+          description: "Overwhelmed by options",
+          icon: "GitBranch",
+          options: ["too_many_options", "dont_know_roles"],
+        },
+        {
+          id: "not_enough_info",
+          label: "Not enough information",
+          description: "Need more exposure and clarity",
+          icon: "Eye",
+          options: ["interests_dont_match", "no_exposure"],
+        },
+      ],
       drilldownOptions: [
         { id: "too_many_options", label: "There are so many options I feel paralyzed trying to choose", icon: "GitBranch" },
         { id: "dont_know_roles", label: "I know my major but I don't know what actual job roles exist for it", icon: "Map" },
@@ -65,6 +97,22 @@ export const surveyConfig = {
       shortLabel: "Search",
       icon: "Search",
       drilldownQuestion: "What's making the search hard?",
+      drilldownBuckets: [
+        {
+          id: "cant_find",
+          label: "Can't find opportunities",
+          description: "Not sure where or what to search",
+          icon: "Globe",
+          options: ["dont_know_where", "nothing_for_major"],
+        },
+        {
+          id: "barriers",
+          label: "Facing barriers",
+          description: "Experience or connections blocking me",
+          icon: "Lock",
+          options: ["all_require_experience", "no_connections"],
+        },
+      ],
       drilldownOptions: [
         { id: "dont_know_where", label: "I don't know where to look beyond Handshake and LinkedIn", icon: "Globe" },
         { id: "nothing_for_major", label: "I search but the results don't match my major or interests", icon: "FilterX" },
@@ -79,6 +127,22 @@ export const surveyConfig = {
       shortLabel: "Materials",
       icon: "FileText",
       drilldownQuestion: "What specifically isn't ready?",
+      drilldownBuckets: [
+        {
+          id: "resume_issues",
+          label: "Resume needs work",
+          description: "Content or quality concerns",
+          icon: "FileText",
+          options: ["empty_resume", "weak_resume"],
+        },
+        {
+          id: "other_materials",
+          label: "Other application materials",
+          description: "Cover letters and tailoring",
+          icon: "PenLine",
+          options: ["cover_letter", "cant_tailor"],
+        },
+      ],
       drilldownOptions: [
         { id: "empty_resume", label: "I don't have relevant experience to put on my resume", icon: "FileX" },
         { id: "weak_resume", label: "I have a resume but I don't think it stands out", icon: "FileMinus" },
@@ -93,6 +157,22 @@ export const surveyConfig = {
       shortLabel: "Applying",
       icon: "Inbox",
       drilldownQuestion: "What best describes your situation?",
+      drilldownBuckets: [
+        {
+          id: "volume_problem",
+          label: "Volume issue",
+          description: "Not applying enough or hearing nothing",
+          icon: "ArrowUp",
+          options: ["few_apps", "many_apps_silence"],
+        },
+        {
+          id: "timing_filtering",
+          label: "Timing or filtering issues",
+          description: "Getting filtered out or missing windows",
+          icon: "CalendarX",
+          options: ["auto_rejections", "missing_deadlines"],
+        },
+      ],
       drilldownOptions: [
         { id: "few_apps", label: "I've only applied to a handful of places and need to do more", icon: "ArrowUp" },
         { id: "many_apps_silence", label: "I've applied to 10+ internships and heard nothing back", icon: "Inbox" },
@@ -107,6 +187,22 @@ export const surveyConfig = {
       shortLabel: "Screening",
       icon: "Video",
       drilldownQuestion: "What's happening with your screening interviews?",
+      drilldownBuckets: [
+        {
+          id: "video_interviews",
+          label: "Video interviews",
+          description: "HireVue and recorded screenings",
+          icon: "Video",
+          options: ["hirevue_ghosted", "hirevue_prep"],
+        },
+        {
+          id: "other_screening",
+          label: "Other screening steps",
+          description: "Phone screens and assessments",
+          icon: "PhoneOff",
+          options: ["phone_screen_stuck", "assessment_filtered"],
+        },
+      ],
       drilldownOptions: [
         { id: "hirevue_ghosted", label: "I complete HireVue or video interviews but never hear back", icon: "VideoOff" },
         { id: "phone_screen_stuck", label: "I get phone screens but can't seem to advance to the next round", icon: "PhoneOff" },
@@ -121,6 +217,22 @@ export const surveyConfig = {
       shortLabel: "Live Int",
       icon: "MessageSquare",
       drilldownQuestion: "Where in live interviews are things breaking down?",
+      drilldownBuckets: [
+        {
+          id: "performance",
+          label: "Performance under pressure",
+          description: "Nerves and behavioral questions",
+          icon: "HeartPulse",
+          options: ["nerves", "behavioral_weak"],
+        },
+        {
+          id: "technical_results",
+          label: "Technical or final rounds",
+          description: "Case studies and late-stage rejections",
+          icon: "Code",
+          options: ["technical_weak", "final_round_rejected"],
+        },
+      ],
       drilldownOptions: [
         { id: "nerves", label: "I get nervous and can't communicate clearly under pressure", icon: "HeartPulse" },
         { id: "behavioral_weak", label: "I struggle with behavioral questions like 'tell me about a time...'", icon: "MessageCircle" },
@@ -135,6 +247,22 @@ export const surveyConfig = {
       shortLabel: "Offers",
       icon: "Scale",
       drilldownQuestion: "What's making the decision hard?",
+      drilldownBuckets: [
+        {
+          id: "comparing_options",
+          label: "Evaluating options",
+          description: "Comparing offers or not feeling excited",
+          icon: "Scale",
+          options: ["comparing", "not_excited"],
+        },
+        {
+          id: "pressure_logistics",
+          label: "Pressure and logistics",
+          description: "Deadlines, location, or compensation",
+          icon: "Timer",
+          options: ["pressure_to_decide", "location_comp"],
+        },
+      ],
       drilldownOptions: [
         { id: "comparing", label: "I'm comparing multiple offers and don't know how to evaluate the tradeoffs", icon: "Scale" },
         { id: "not_excited", label: "I have one offer but it's not what I was hoping for", icon: "Meh" },
@@ -149,6 +277,22 @@ export const surveyConfig = {
       shortLabel: "Waiting",
       icon: "Clock",
       drilldownQuestion: "What's making the waiting period hard?",
+      drilldownBuckets: [
+        {
+          id: "no_response",
+          label: "No response",
+          description: "Ghosted or stalled processes",
+          icon: "Clock",
+          options: ["ghosted_after_interview", "stalled_process"],
+        },
+        {
+          id: "uncertainty",
+          label: "Uncertainty",
+          description: "Not sure what to do while waiting",
+          icon: "HelpCircle",
+          options: ["unsure_keep_applying", "anxiety"],
+        },
+      ],
       drilldownOptions: [
         { id: "ghosted_after_interview", label: "I interviewed weeks ago and haven't heard anything", icon: "Clock" },
         { id: "unsure_keep_applying", label: "I don't know if I should keep applying while I wait", icon: "HelpCircle" },
@@ -163,6 +307,22 @@ export const surveyConfig = {
     {
       id: "follow_up_1",
       question: "How many internships have you applied to this year?",
+      buckets: [
+        {
+          id: "getting_started_apps",
+          label: "Just getting started",
+          description: "Haven't applied much yet",
+          icon: "Circle",
+          options: ["applied_0", "applied_1_5"],
+        },
+        {
+          id: "been_at_it",
+          label: "Been at it",
+          description: "Applied to several or many",
+          icon: "ChevronsUp",
+          options: ["applied_6_15", "applied_15_plus"],
+        },
+      ],
       options: [
         { id: "applied_0", label: "None yet", icon: "Circle" },
         { id: "applied_1_5", label: "1 to 5", icon: "ArrowUp" },
@@ -173,6 +333,22 @@ export const surveyConfig = {
     {
       id: "follow_up_2",
       question: "When did you start actively looking for an internship?",
+      buckets: [
+        {
+          id: "recent_search",
+          label: "Recently",
+          description: "Started this year",
+          icon: "Calendar",
+          options: ["this_semester", "last_semester"],
+        },
+        {
+          id: "longer_or_not",
+          label: "A while ago or not yet",
+          description: "Been searching long or haven't started",
+          icon: "History",
+          options: ["over_a_year", "havent_started"],
+        },
+      ],
       options: [
         { id: "this_semester", label: "This semester", icon: "Calendar" },
         { id: "last_semester", label: "Last semester", icon: "CalendarDays" },
@@ -183,6 +359,22 @@ export const surveyConfig = {
     {
       id: "follow_up_3",
       question: "What's been your biggest source of internship leads so far?",
+      buckets: [
+        {
+          id: "online_platforms",
+          label: "Online platforms",
+          description: "Job boards and websites",
+          icon: "Monitor",
+          options: ["handshake", "linkedin", "company_sites"],
+        },
+        {
+          id: "offline_or_none",
+          label: "Offline or haven't looked",
+          description: "Personal connections or not started",
+          icon: "Users",
+          options: ["personal_network", "havent_looked"],
+        },
+      ],
       options: [
         { id: "handshake", label: "Handshake", icon: "Monitor" },
         { id: "linkedin", label: "LinkedIn", icon: "Linkedin" },
@@ -194,6 +386,22 @@ export const surveyConfig = {
     {
       id: "follow_up_4",
       question: "What would make the biggest difference for you right now?",
+      buckets: [
+        {
+          id: "finding_opportunities",
+          label: "Finding opportunities",
+          description: "Targeting and materials",
+          icon: "Target",
+          options: ["know_where_to_apply", "stronger_resume"],
+        },
+        {
+          id: "getting_support",
+          label: "Getting support",
+          description: "Practice and guidance",
+          icon: "MessageSquare",
+          options: ["interview_practice", "someone_to_talk_to"],
+        },
+      ],
       options: [
         { id: "know_where_to_apply", label: "Knowing exactly which companies to apply to for my major", icon: "Target" },
         { id: "stronger_resume", label: "Having a stronger resume or application", icon: "FileCheck" },
@@ -204,6 +412,22 @@ export const surveyConfig = {
     {
       id: "follow_up_5",
       question: "What's your major?",
+      buckets: [
+        {
+          id: "quantitative",
+          label: "Quantitative fields",
+          description: "Numbers, data, and analysis",
+          icon: "Calculator",
+          options: ["finance", "accountancy", "business_analytics"],
+        },
+        {
+          id: "applied_fields",
+          label: "Applied and operational",
+          description: "Marketing, operations, and more",
+          icon: "Megaphone",
+          options: ["marketing", "supply_chain", "other_major"],
+        },
+      ],
       options: [
         { id: "finance", label: "Finance", icon: "TrendingUp" },
         { id: "marketing", label: "Marketing", icon: "Megaphone" },

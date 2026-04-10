@@ -59,6 +59,22 @@ const SurveyEditor = () => {
       {
         id: `follow_up_${prev.length + 1}`,
         question: "New question",
+        buckets: [
+          {
+            id: "new_bucket_1",
+            label: "Category 1",
+            description: "First category",
+            icon: "Circle",
+            options: ["new_opt_1"],
+          },
+          {
+            id: "new_bucket_2",
+            label: "Category 2",
+            description: "Second category",
+            icon: "Circle",
+            options: ["new_opt_2"],
+          },
+        ],
         options: [
           { id: `new_opt_1`, label: "Option 1", icon: "Circle" },
           { id: `new_opt_2`, label: "Option 2", icon: "Circle" },
