@@ -6,10 +6,8 @@ import BackButton from "./BackButton";
 import YearSelect from "./YearSelect";
 import StageSelect from "./StageSelect";
 import DrilldownSelect from "./DrilldownSelect";
-import ContinuePrompt from "./ContinuePrompt";
 import FollowUpQuestion from "./FollowUpQuestion";
 import Confirmation from "./Confirmation";
-import EncouragingMessage from "./EncouragingMessage";
 
 type Screen =
   | "year"
