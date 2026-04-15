@@ -121,7 +121,7 @@ const CompactResponses = ({ data }: CompactResponsesProps) => {
                   </td>
                   <td className="p-2">
                     <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                      {getLabel(r.pipeline_stage).slice(0, 30)}…
+                      {(getLabel(r.pipeline_stage) || "—").slice(0, 30)}…
                     </span>
                   </td>
                   <td className="p-2 text-xs text-foreground truncate max-w-[150px]">{getLabel(r.bottleneck_detail)}</td>
