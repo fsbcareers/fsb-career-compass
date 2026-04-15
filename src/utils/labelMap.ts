@@ -24,6 +24,7 @@ labelMap["sophomore"] = "Sophomore";
 labelMap["junior"] = "Junior";
 labelMap["senior"] = "Senior";
 
-export function getLabel(id: string): string {
+export function getLabel(id: string | null | undefined): string {
+  if (!id) return "—";
   return labelMap[id] || id;
 }
