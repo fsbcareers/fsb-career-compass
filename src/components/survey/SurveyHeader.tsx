@@ -1,8 +1,11 @@
 const SurveyHeader = () => {
   return (
-    <div className="text-center pt-4 pb-2 h-[40px] flex flex-col items-center justify-center">
-      <p className="text-xs uppercase tracking-[0.15em] text-survey-subtitle">
-        Farmer School of Business — Career checkpoint
+    <div className="text-center pt-5 pb-1 flex flex-col items-center justify-center">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-medium">
+        Farmer School of Business
+      </p>
+      <p className="text-[11px] text-muted-foreground/60 mt-0.5">
+        Career Checkpoint
       </p>
     </div>
   );

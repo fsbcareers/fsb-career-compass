@@ -1,3 +1,5 @@
+import { ChevronLeft } from "lucide-react";
+
 interface BackButtonProps {
   onBack: () => void;
 }
@@ -7,9 +9,10 @@ const BackButton = ({ onBack }: BackButtonProps) => {
     <button
       onClick={onBack}
       style={{ touchAction: "manipulation" }}
-      className="text-sm text-survey-subtitle hover:text-foreground transition-colors py-2 min-h-[44px] min-w-[44px]"
+      className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors py-2 min-h-[44px] min-w-[44px] active:scale-95"
     >
-      ← Back
+      <ChevronLeft size={16} />
+      <span>Back</span>
     </button>
   );
 };
