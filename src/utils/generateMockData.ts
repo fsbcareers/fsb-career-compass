@@ -58,8 +58,6 @@ export function generateMockData(count = 200): SurveyResponse[] {
     const securedFollowUpWeights = [35, 25, 25, 15];
 
     const fu: string[] = [];
-    // For secured seniors, first follow-up slot is the secured-only question
-    let fuFieldOffset = 0;
     let follow_up_secured_1 = "";
     if (stage.id === "already_secured") {
       follow_up_secured_1 = pick(securedFollowUpOptions, securedFollowUpWeights);
