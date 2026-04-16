@@ -11,8 +11,8 @@ interface BottleneckHeatmapProps {
 const years = ["freshman", "sophomore", "junior", "senior"];
 const yearLabels: Record<string, string> = { freshman: "Freshman", sophomore: "Sophomore", junior: "Junior", senior: "Senior" };
 
-const stages = surveyConfig.pipelineStages;
-const buckets = surveyConfig.buckets;
+const stages = surveyConfig.pipelineStages.filter((s) => s.id !== "already_secured");
+const buckets = surveyConfig.buckets.filter((b) => b.id !== "already_done");
 
 const shortLabels: Record<string, string> = {
   awareness: "Aware",
@@ -35,9 +35,10 @@ function getCellColor(pct: number): { bg: string; text: string } {
 }
 
 const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatmapProps) => {
-  const { grid, yearTotals, colTotals, totalResponses } = useMemo(() => {
+  const { grid, yearTotals, colTotals, totalResponses, securedCount } = useMemo(() => {
     const counts: Record<string, Record<string, number>> = {};
     const yTotals: Record<string, number> = {};
+    let secured = 0;
     years.forEach((y) => {
       counts[y] = {};
       stages.forEach((s) => (counts[y][s.id] = 0));
@@ -45,6 +46,10 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
     });
 
     data.forEach((r) => {
+      if (r.pipeline_stage === "already_secured") {
+        secured++;
+        return;
+      }
       if (counts[r.class_year] && counts[r.class_year][r.pipeline_stage] !== undefined) {
         counts[r.class_year][r.pipeline_stage]++;
         yTotals[r.class_year]++;
@@ -56,11 +61,28 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
       cTotals[s.id] = years.reduce((sum, y) => sum + counts[y][s.id], 0);
     });
 
-    return { grid: counts, yearTotals: yTotals, colTotals: cTotals, totalResponses: data.length };
+    const nonSecuredTotal = data.length - secured;
+    return { grid: counts, yearTotals: yTotals, colTotals: cTotals, totalResponses: nonSecuredTotal, securedCount: secured };
   }, [data]);
+
+  const isSecuredSelected = selectedCell?.year === "senior" && selectedCell?.stage === "already_secured";
 
   return (
     <div className="overflow-x-auto">
+      {securedCount > 0 && (
+        <button
+          onClick={() => onCellSelect(isSecuredSelected ? null : { year: "senior", stage: "already_secured" })}
+          className={`mb-3 w-full flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm transition-all ${
+            isSecuredSelected
+              ? "bg-[hsl(160_40%_92%)] ring-2 ring-[hsl(160_60%_40%)] text-[hsl(160_60%_30%)]"
+              : "bg-[hsl(160_30%_95%)] hover:bg-[hsl(160_40%_92%)] text-[hsl(160_50%_30%)]"
+          }`}
+        >
+          <span className="text-[hsl(160_60%_40%)]">✓</span>
+          <span className="font-medium">{securedCount} senior{securedCount !== 1 ? "s" : ""} already secured a job</span>
+          <span className="ml-auto text-xs text-muted-foreground">View breakdown →</span>
+        </button>
+      )}
       <table className="w-full text-sm" style={{ borderSpacing: "3px 6px", borderCollapse: "separate" }}>
         <thead>
           {/* Bucket group headers */}

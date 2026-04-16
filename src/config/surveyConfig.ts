@@ -345,6 +345,33 @@ export const surveyConfig = {
 
   followUpQuestions: [
     {
+      id: "follow_up_secured_1",
+      question: "What single resource or experience helped you the most?",
+      onlyForStage: "already_secured",
+      buckets: [
+        {
+          id: "converted_or_center",
+          label: "Structured support",
+          description: "Internship conversion or career center",
+          icon: "Repeat",
+          options: ["secured_internship_converted", "secured_career_center"],
+        },
+        {
+          id: "self_or_network",
+          label: "Self-directed or connections",
+          description: "Figured it out independently",
+          icon: "Target",
+          options: ["secured_personal_network", "secured_self_directed"],
+        },
+      ],
+      options: [
+        { id: "secured_internship_converted", label: "My internship converted to a full-time offer", icon: "Repeat" },
+        { id: "secured_career_center", label: "Working with a career advisor or attending a career event", icon: "Users" },
+        { id: "secured_personal_network", label: "A personal connection or referral", icon: "Link" },
+        { id: "secured_self_directed", label: "I figured it out on my own through online applications", icon: "Target" },
+      ],
+    },
+    {
       id: "follow_up_1",
       question: "How many internships have you applied to this year?",
       buckets: [

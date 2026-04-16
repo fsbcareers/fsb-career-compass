@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { surveyConfig } from "@/config/surveyConfig";
 import { saveAnswer } from "@/utils/saveAnswer";
 import SurveyHeader from "./SurveyHeader";
@@ -22,8 +22,7 @@ interface SurveyContainerProps {
 }
 
 const VALID_YEARS = ["freshman", "sophomore", "junior", "senior"];
-const MAX_FOLLOW_UPS = surveyConfig.followUpQuestions.length;
-const TOTAL_STEPS = 3 + MAX_FOLLOW_UPS; // year + stage + drilldown + follow-ups
+// Filtered follow-ups are computed dynamically based on stageId
 
 const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const hasValidYear = initialYear && VALID_YEARS.includes(initialYear);
@@ -34,6 +33,14 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const [stageId, setStageId] = useState("");
   const [questionCount, setQuestionCount] = useState(hasValidYear ? 1 : 0);
   const [followUpIndex, setFollowUpIndex] = useState(0);
+
+  // Filter follow-ups: include question if no onlyForStage, or if it matches current stageId
+  const activeFollowUps = useMemo(() =>
+    surveyConfig.followUpQuestions.filter((q) => !(q as any).onlyForStage || (q as any).onlyForStage === stageId),
+    [stageId]
+  );
+  const maxFollowUps = activeFollowUps.length;
+  const totalSteps = 3 + maxFollowUps;
   const [history, setHistory] = useState<Screen[]>([]);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [showEncouragement, setShowEncouragement] = useState(false);
@@ -48,9 +55,9 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const getProgress = () => {
     switch (screen) {
       case "year": return 0;
-      case "stage": return 1 / TOTAL_STEPS;
-      case "drilldown": return 2 / TOTAL_STEPS;
-      case "follow_up": return (3 + followUpIndex) / TOTAL_STEPS;
+      case "stage": return 1 / totalSteps;
+      case "drilldown": return 2 / totalSteps;
+      case "follow_up": return (3 + followUpIndex) / totalSteps;
       case "confirmation": return 1;
       default: return 0;
     }
@@ -97,7 +104,8 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   };
 
   const handleFollowUp = (optionId: string) => {
-    const fieldName = surveyConfig.followUpQuestions[followUpIndex].id;
+    const currentQuestion = activeFollowUps[followUpIndex];
+    const fieldName = currentQuestion.id;
     const newCount = 4 + followUpIndex;
     setQuestionCount(newCount);
 
@@ -105,7 +113,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
     saveAnswer(rowId, "question_count", newCount.toString());
 
     const nextIndex = followUpIndex + 1;
-    if (nextIndex >= MAX_FOLLOW_UPS) {
+    if (nextIndex >= maxFollowUps) {
       pushScreen("confirmation");
     } else {
       setFollowUpIndex(nextIndex);
@@ -155,7 +163,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
             )}
             {screen === "follow_up" && (
               <FollowUpQuestion
-                questionIndex={followUpIndex}
+                question={activeFollowUps[followUpIndex]}
                 onSelect={handleFollowUp}
                 classYear={classYear}
                 showEncouragement={showEncouragement}

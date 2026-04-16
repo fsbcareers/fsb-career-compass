@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
-import { surveyConfig } from "@/config/surveyConfig";
 import { icons, CheckCircle, ChevronRight } from "lucide-react";
 import { adaptText } from "@/utils/seniorText";
 
+interface FollowUpQuestionData {
+  id: string;
+  question: string;
+  buckets: { id: string; label: string; description: string; icon: string; options: string[] }[];
+  options: { id: string; label: string; icon: string }[];
+}
+
 interface FollowUpQuestionProps {
-  questionIndex: number;
+  question: FollowUpQuestionData;
   onSelect: (optionId: string) => void;
   classYear?: string;
   showEncouragement?: boolean;
@@ -12,13 +18,12 @@ interface FollowUpQuestionProps {
 }
 
 const FollowUpQuestion = ({
-  questionIndex,
+  question,
   onSelect,
   classYear,
   showEncouragement,
   onEncouragementShown,
 }: FollowUpQuestionProps) => {
-  const question = surveyConfig.followUpQuestions[questionIndex];
   const [expandedBucket, setExpandedBucket] = useState<string | null>(null);
   const [tapped, setTapped] = useState<string | null>(null);
   const [bannerVisible, setBannerVisible] = useState(false);
