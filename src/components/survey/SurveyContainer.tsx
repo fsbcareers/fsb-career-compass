@@ -8,6 +8,7 @@ import StageSelect from "./StageSelect";
 import DrilldownSelect from "./DrilldownSelect";
 import FollowUpQuestion from "./FollowUpQuestion";
 import Confirmation from "./Confirmation";
+import ProgressPill from "./ProgressPill";
 
 type Screen =
   | "year"
@@ -22,6 +23,7 @@ interface SurveyContainerProps {
 
 const VALID_YEARS = ["freshman", "sophomore", "junior", "senior"];
 const MAX_FOLLOW_UPS = surveyConfig.followUpQuestions.length;
+const TOTAL_STEPS = 3 + MAX_FOLLOW_UPS; // year + stage + drilldown + follow-ups
 
 const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const hasValidYear = initialYear && VALID_YEARS.includes(initialYear);
@@ -36,12 +38,23 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [showEncouragement, setShowEncouragement] = useState(false);
 
-  // Save initial year from URL param — fire-and-forget
   const [initialSaved, setInitialSaved] = useState(false);
   if (hasValidYear && !initialSaved) {
     setInitialSaved(true);
     saveAnswer(null, "class_year", initialYear!).then((r) => setRowId(r.row_id));
   }
+
+  // Compute progress (0-1)
+  const getProgress = () => {
+    switch (screen) {
+      case "year": return 0;
+      case "stage": return 1 / TOTAL_STEPS;
+      case "drilldown": return 2 / TOTAL_STEPS;
+      case "follow_up": return (3 + followUpIndex) / TOTAL_STEPS;
+      case "confirmation": return 1;
+      default: return 0;
+    }
+  };
 
   const pushScreen = useCallback(
     (next: Screen) => {
@@ -117,12 +130,20 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const animationClass = direction === "forward" ? "animate-slide-in-left" : "animate-slide-in-right";
 
   return (
-    <div className="min-h-screen bg-survey-bg flex justify-center overscroll-contain">
-      <div className="w-full max-w-[480px]">
+    <div className="min-h-[100dvh] bg-survey-bg flex justify-center overscroll-contain">
+      <div className="w-full max-w-[480px] flex flex-col">
         <SurveyHeader />
-        <div className="px-5 pb-10">
+
+        {/* Progress pill — hidden on year select and confirmation */}
+        {screen !== "year" && screen !== "confirmation" && (
+          <div className="px-5 pt-1 pb-2">
+            <ProgressPill progress={getProgress()} />
+          </div>
+        )}
+
+        <div className="px-5 pb-10 flex-1">
           {showBack && (
-            <div className="mb-4">
+            <div className="mb-3">
               <BackButton onBack={goBack} />
             </div>
           )}

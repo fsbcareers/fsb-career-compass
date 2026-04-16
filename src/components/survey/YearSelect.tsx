@@ -5,10 +5,10 @@ interface YearSelectProps {
 }
 
 const years = [
-  { id: "freshman", label: "Freshman", sub: "1st year" },
-  { id: "sophomore", label: "Sophomore", sub: "2nd year" },
-  { id: "junior", label: "Junior", sub: "3rd year" },
-  { id: "senior", label: "Senior", sub: "4th year" },
+  { id: "freshman", label: "Freshman", sub: "1st year", emoji: "🌱" },
+  { id: "sophomore", label: "Sophomore", sub: "2nd year", emoji: "📚" },
+  { id: "junior", label: "Junior", sub: "3rd year", emoji: "🚀" },
+  { id: "senior", label: "Senior", sub: "4th year", emoji: "🎓" },
 ];
 
 const YearSelect = ({ onSelect }: YearSelectProps) => {
@@ -16,32 +16,38 @@ const YearSelect = ({ onSelect }: YearSelectProps) => {
 
   const handleTap = (yearId: string) => {
     setTapped(yearId);
-    setTimeout(() => onSelect(yearId), 150);
+    setTimeout(() => onSelect(yearId), 180);
   };
 
   return (
     <div className="animate-slide-in-left">
-      <h2 className="text-[22px] font-semibold text-foreground mb-6 leading-[1.4]">
+      <h2 className="text-[24px] font-bold text-foreground mb-2 leading-[1.3]">
         What year are you?
       </h2>
+      <p className="text-sm text-muted-foreground mb-6">Tap to get started 👋</p>
+
       <div className="grid grid-cols-2 gap-3">
-        {years.map((year) => (
+        {years.map((year, idx) => (
           <button
             key={year.id}
             onClick={() => handleTap(year.id)}
-            style={{ touchAction: "manipulation" }}
-            className={`flex flex-col items-center justify-center min-h-[80px] py-4 px-4 rounded-lg border transition-all duration-150
+            style={{
+              touchAction: "manipulation",
+              animationDelay: `${idx * 60}ms`,
+            }}
+            className={`animate-float-up flex flex-col items-center justify-center min-h-[100px] py-5 px-4 rounded-xl border-2 transition-all duration-150 active:scale-[0.95]
               ${
                 tapped === year.id
-                  ? "bg-survey-highlight-bg border-primary scale-[0.97]"
-                  : "border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover"
+                  ? "bg-survey-highlight-bg border-primary scale-[0.97] shadow-md"
+                  : "border-survey-button-border bg-survey-button-bg hover:bg-survey-button-hover hover:border-muted-foreground/30"
               }
             `}
           >
-            <span className="text-base font-medium text-foreground">
+            <span className="text-2xl mb-1">{year.emoji}</span>
+            <span className="text-base font-semibold text-foreground">
               {year.label}
             </span>
-            <span className="text-xs text-survey-subtitle mt-1">
+            <span className="text-xs text-muted-foreground mt-0.5">
               {year.sub}
             </span>
           </button>
