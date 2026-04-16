@@ -28,8 +28,10 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
     setTimeout(() => onSelect(stageId), 150);
   };
 
-  const buckets = surveyConfig.buckets;
   const isSenior = classYear === "senior";
+  const buckets = surveyConfig.buckets.filter(
+    (b) => !(b as any).seniorOnly || isSenior
+  );
   const journeyWord = isSenior ? "job" : "internship";
 
   return (
