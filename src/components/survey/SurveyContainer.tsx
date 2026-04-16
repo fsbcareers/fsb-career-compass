@@ -163,7 +163,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
             )}
             {screen === "follow_up" && (
               <FollowUpQuestion
-                questionIndex={followUpIndex}
+                question={activeFollowUps[followUpIndex]}
                 onSelect={handleFollowUp}
                 classYear={classYear}
                 showEncouragement={showEncouragement}
