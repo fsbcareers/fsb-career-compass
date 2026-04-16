@@ -48,7 +48,7 @@ export function generateMockData(count = 200): SurveyResponse[] {
     } else {
       stage = pick(nonSecuredStages, stageWeights);
     }
-    const detail = pick(stage.drilldownOptions);
+    const detail = pick(stage.drilldownOptions) as { id: string };
 
     const extraQs = pick([0, 1, 2, 3, 4, 5], [10, 8, 12, 20, 25, 25]);
     const questionCount = 3 + extraQs;
