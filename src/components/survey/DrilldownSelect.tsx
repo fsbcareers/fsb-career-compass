@@ -49,7 +49,7 @@ const DrilldownSelect = ({ stageId, onSelect, classYear }: DrilldownSelectProps)
               <button
                 onClick={() => handleBucketTap(bucket.id)}
                 style={{ touchAction: "manipulation" }}
-                className={`relative flex items-center w-full min-h-[56px] py-3 pl-4 pr-3 rounded-lg border transition-all duration-200 text-left
+                className={`relative flex items-center w-full min-h-[56px] py-3 pl-4 pr-3 rounded-xl border-2 transition-all duration-200 text-left active:scale-[0.97]
                   ${
                     isExpanded
                       ? "bg-survey-highlight-bg border-primary"
@@ -98,7 +98,7 @@ const DrilldownSelect = ({ stageId, onSelect, classYear }: DrilldownSelectProps)
                         touchAction: "manipulation",
                         transitionDelay: isExpanded ? `${idx * 50}ms` : "0ms",
                       }}
-                      className={`flex items-center w-full text-left min-h-[56px] py-3 px-4 rounded-lg border transition-all duration-150
+                      className={`flex items-center w-full text-left min-h-[56px] py-3 px-4 rounded-xl border-2 transition-all duration-150 active:scale-[0.96]
                         ${
                           isExpanded
                             ? "translate-y-0 opacity-100"
