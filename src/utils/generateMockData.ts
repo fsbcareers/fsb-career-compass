@@ -29,7 +29,9 @@ export function generateMockData(count = 200): SurveyResponse[] {
   const years = ["freshman", "sophomore", "junior", "senior"];
   const yearWeights = [15, 35, 30, 20];
   const stages = surveyConfig.pipelineStages;
-  // 9 stages: awareness, direction, search, materials, applying, screening, live_interviews, offers, waiting
+  const nonSecuredStages = stages.filter((s) => s.id !== "already_secured");
+  const securedStage = stages.find((s) => s.id === "already_secured")!;
+  // weights for the 9 non-secured stages
   const stageWeights = [20, 10, 14, 10, 18, 8, 8, 6, 6];
   const followUps = surveyConfig.followUpQuestions;
 
@@ -38,9 +40,15 @@ export function generateMockData(count = 200): SurveyResponse[] {
 
   return Array.from({ length: count }, (_, i) => {
     const year = pick(years, yearWeights);
-    const stageIdx = stages.indexOf(pick(stages, stageWeights));
-    const stage = stages[stageIdx];
-    const detail = pick(stage.drilldownOptions);
+
+    // Seniors have a 30% chance of being "already_secured"
+    let stage;
+    if (year === "senior" && Math.random() < 0.3) {
+      stage = securedStage;
+    } else {
+      stage = pick(nonSecuredStages, stageWeights);
+    }
+    const detail = pick(stage.drilldownOptions) as { id: string };
 
     const extraQs = pick([0, 1, 2, 3, 4, 5], [10, 8, 12, 20, 25, 25]);
     const questionCount = 3 + extraQs;
