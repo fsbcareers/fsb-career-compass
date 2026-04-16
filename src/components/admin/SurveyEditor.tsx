@@ -7,7 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown, ChevronUp, Pencil, Plus, Trash2, Eye, EyeOff } from "lucide-react";
 
 type StageData = typeof surveyConfig.pipelineStages[number];
-type FollowUpData = typeof surveyConfig.followUpQuestions[number] & { disabled?: boolean };
+type FollowUpData = typeof surveyConfig.followUpQuestions[number] & { disabled?: boolean; onlyForStage?: string };
 
 const SurveyEditor = () => {
   const [stages, setStages] = useState<StageData[]>(() => JSON.parse(JSON.stringify(surveyConfig.pipelineStages)));
