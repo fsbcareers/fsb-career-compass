@@ -11,8 +11,8 @@ interface BottleneckHeatmapProps {
 const years = ["freshman", "sophomore", "junior", "senior"];
 const yearLabels: Record<string, string> = { freshman: "Freshman", sophomore: "Sophomore", junior: "Junior", senior: "Senior" };
 
-const stages = surveyConfig.pipelineStages;
-const buckets = surveyConfig.buckets;
+const stages = surveyConfig.pipelineStages.filter((s) => s.id !== "already_secured");
+const buckets = surveyConfig.buckets.filter((b) => b.id !== "already_done");
 
 const shortLabels: Record<string, string> = {
   awareness: "Aware",

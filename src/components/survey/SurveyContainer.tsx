@@ -22,8 +22,7 @@ interface SurveyContainerProps {
 }
 
 const VALID_YEARS = ["freshman", "sophomore", "junior", "senior"];
-const MAX_FOLLOW_UPS = surveyConfig.followUpQuestions.length;
-const TOTAL_STEPS = 3 + MAX_FOLLOW_UPS; // year + stage + drilldown + follow-ups
+// Filtered follow-ups are computed dynamically based on stageId
 
 const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const hasValidYear = initialYear && VALID_YEARS.includes(initialYear);
