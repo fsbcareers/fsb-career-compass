@@ -5,6 +5,7 @@ export interface SurveyResponse {
   class_year: string;
   pipeline_stage: string;
   bottleneck_detail: string;
+  follow_up_secured_1: string;
   follow_up_1: string;
   follow_up_2: string;
   follow_up_3: string;
@@ -79,6 +80,7 @@ export function generateMockData(count = 200): SurveyResponse[] {
       class_year: year,
       pipeline_stage: stage.id,
       bottleneck_detail: detail.id,
+      follow_up_secured_1: follow_up_secured_1,
       follow_up_1: fu[0],
       follow_up_2: fu[1],
       follow_up_3: fu[2],
