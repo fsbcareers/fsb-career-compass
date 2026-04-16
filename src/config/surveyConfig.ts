@@ -1,6 +1,14 @@
 export const surveyConfig = {
   buckets: [
     {
+      id: "already_done",
+      label: "Already secured",
+      description: "I already have a job or offer lined up",
+      icon: "CheckCircle",
+      stages: ["already_secured"],
+      seniorOnly: true,
+    },
+    {
       id: "getting_started",
       label: "Getting started",
       description: "Figuring out what I want and where to begin",
@@ -31,6 +39,38 @@ export const surveyConfig = {
   ],
 
   pipelineStages: [
+    {
+      id: "already_secured",
+      label: "I already have a job or offer secured",
+      shortLabel: "Secured",
+      icon: "CheckCircle",
+      drilldownQuestion: "Looking back at your job search, what was the most challenging part of the process?",
+      drilldownBuckets: [
+        {
+          id: "early_challenges",
+          label: "Early-stage challenges",
+          description: "Direction and finding opportunities",
+          icon: "Compass",
+          options: ["retro_direction", "retro_finding", "retro_materials"],
+        },
+        {
+          id: "late_challenges",
+          label: "Late-stage challenges",
+          description: "Interviews, offers, and hearing back",
+          icon: "MessageSquare",
+          options: ["retro_hearing_back", "retro_interviews", "retro_offers"],
+        },
+      ],
+      drilldownOptions: [
+        { id: "retro_direction", label: "Figuring out what kind of job I actually wanted", icon: "Compass" },
+        { id: "retro_finding", label: "Finding the right opportunities to apply to", icon: "Search" },
+        { id: "retro_materials", label: "Getting my resume and materials strong enough", icon: "FileText" },
+        { id: "retro_hearing_back", label: "Hearing back after submitting applications", icon: "Inbox" },
+        { id: "retro_interviews", label: "Performing well in interviews", icon: "MessageSquare" },
+        { id: "retro_offers", label: "Evaluating and deciding between offers", icon: "Scale" },
+      ],
+      resourceNudge: "Congrats on securing your offer! Your feedback helps us better support students who are still navigating the process. Thank you!",
+    },
     {
       id: "awareness",
       label: "I didn't realize I needed to be thinking about internships yet",
