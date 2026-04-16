@@ -1,43 +1,45 @@
 
 
-## Plan: Add "Already Secured" Senior Path
+## Plan: Complete the "Already Secured" Senior Path — Remaining Gaps
 
-### What This Does
-For seniors only, adds a new option at the top of the stage selection: **"I already have a job/offer secured"**. When selected, instead of the normal bottleneck flow, it asks retrospective questions like "Looking back, what was the hardest part of your job search?" — collecting data from successful students that helps inform support for those still searching.
+### What's already done
+- `already_secured` stage and `already_done` bucket with `seniorOnly` flag in `surveyConfig.ts`
+- Conditional bucket filtering in `StageSelect.tsx`
+- Mock data generation for seniors with `already_secured`
 
-### How It Works
+### What's left (3 changes)
 
-**1. Add new pipeline stage to `surveyConfig.ts`**
-- Add a new stage `already_secured` with drilldown question: "Looking back at your job search, what was the most challenging part of the process?"
-- Drilldown options cover the same pipeline areas retrospectively:
-  - "Figuring out what kind of job I actually wanted"
-  - "Finding the right opportunities to apply to"
-  - "Getting my resume and materials strong enough"
-  - "Hearing back after submitting applications"
-  - "Performing well in interviews"
-  - "Evaluating and deciding between offers"
-- Resource nudge congratulates them and explains how their input helps other students
+**1. Secured-only follow-up question (`surveyConfig.ts` + `SurveyContainer.tsx`)**
 
-**2. Add a new bucket to `surveyConfig.ts`**
-- New bucket `already_done` (e.g. "Already secured") with icon `CheckCircle`, containing only the `already_secured` stage
-- Positioned at the top of the buckets array so it appears first
+Add a new follow-up question to the `followUpQuestions` array with an `onlyForStage: "already_secured"` flag:
+- "What single resource or experience helped you the most?"
+- Options: internship converted, career advisor, personal connection, self-directed
+- Insert it as the first item in `followUpQuestions` (index 0), shifting existing ones down
 
-**3. Conditionally show this bucket only for seniors in `StageSelect.tsx`**
-- Filter `surveyConfig.buckets` to exclude `already_done` for non-senior class years
-- For seniors, it renders at the top with distinct styling (e.g. a celebratory feel)
+In `SurveyContainer.tsx`, build the follow-up queue dynamically: filter `followUpQuestions` to only include questions where `onlyForStage` matches `stageId` OR `onlyForStage` is undefined. This way secured seniors get this extra question first, then the standard ones; non-secured students skip it entirely.
 
-**4. Update `SurveyContainer.tsx` flow**
-- No structural changes needed — the `already_secured` stage flows through the same `handleStage` → `handleDrilldown` → follow-up pipeline
-- The follow-up questions still apply (applications count, timing, lead sources, etc.) but the `seniorText` adapter already swaps "internship" → "job"
+Save the answer to field `follow_up_secured_1` (the question's `id`).
 
-**5. Update `labelMap.ts`**
-- Automatically picks up new stage/option IDs from config (no manual change needed since it iterates `surveyConfig`)
+**2. Green-tinted "Already Secured" card (`StageSelect.tsx`)**
 
-**6. Update `generateMockData.ts`**
-- Add `already_secured` to the stage pool with a weight for seniors only, so mock data includes this path
+When rendering the `already_done` bucket for seniors, apply distinct styling:
+- Light green/teal background (`#E1F5EE`) instead of the default card color
+- Teal-colored `CheckCircle` icon instead of muted gray
+- Slightly larger icon (24px vs 22px)
+- The card already renders at the top since `already_done` is first in the array
 
-### Files Changed
-- `src/config/surveyConfig.ts` — new bucket + new pipeline stage
-- `src/components/survey/StageSelect.tsx` — filter buckets by class year
-- `src/utils/generateMockData.ts` — include new stage in mock data for seniors
+**3. Heatmap summary stat above grid (`BottleneckHeatmap.tsx`)**
+
+Option B: Don't include `already_secured` in the heatmap columns. Instead:
+- Filter `already_secured` out of the `stages` array used for columns
+- Count seniors with `pipeline_stage === "already_secured"` 
+- Render a summary bar above the table: "X seniors reported as already secured" with a clickable link to show their retrospective breakdown in the drilldown panel
+- Clicking triggers `onCellSelect({ year: "senior", stage: "already_secured" })`
+
+### Files changed
+- `src/config/surveyConfig.ts` — add secured-only follow-up question with `onlyForStage` flag
+- `src/components/survey/SurveyContainer.tsx` — filter follow-up queue by `stageId`
+- `src/components/survey/StageSelect.tsx` — green tint styling for `already_done` bucket
+- `src/components/admin/BottleneckHeatmap.tsx` — summary stat above grid, exclude `already_secured` from columns
+- `src/utils/generateMockData.ts` — add `follow_up_secured_1` values for secured mock rows
 
