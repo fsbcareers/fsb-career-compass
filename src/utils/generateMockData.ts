@@ -39,12 +39,18 @@ export function generateMockData(count = 200): SurveyResponse[] {
   const now = Date.now();
   const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
 
+  const securedRateByYear: Record<string, number> = {
+    senior: 0.4,
+    junior: 0.15,
+    sophomore: 0.05,
+    freshman: 0.02,
+  };
+
   return Array.from({ length: count }, (_, i) => {
     const year = pick(years, yearWeights);
 
-    // Seniors have a 30% chance of being "already_secured"
     let stage;
-    if (year === "senior" && Math.random() < 0.3) {
+    if (Math.random() < (securedRateByYear[year] || 0)) {
       stage = securedStage;
     } else {
       stage = pick(nonSecuredStages, stageWeights);
@@ -54,8 +60,8 @@ export function generateMockData(count = 200): SurveyResponse[] {
     const extraQs = pick([0, 1, 2, 3, 4, 5], [10, 8, 12, 20, 25, 25]);
     const questionCount = 3 + extraQs;
 
-    const securedFollowUpOptions = ["secured_internship_converted", "secured_career_center", "secured_personal_network", "secured_self_directed"];
-    const securedFollowUpWeights = [35, 25, 25, 15];
+    const securedFollowUpOptions = ["secured_internship_converted", "secured_career_center", "secured_personal_network", "secured_self_directed", "secured_professor"];
+    const securedFollowUpWeights = [30, 25, 22, 15, 8];
 
     const fu: string[] = [];
     let follow_up_secured_1 = "";
@@ -63,9 +69,32 @@ export function generateMockData(count = 200): SurveyResponse[] {
       follow_up_secured_1 = pick(securedFollowUpOptions, securedFollowUpWeights);
     }
 
+    // Helper for multi-select: pick 1-3 distinct options
+    const pickMulti = (opts: string[], maxN = 3): string => {
+      const n = 1 + Math.floor(Math.random() * Math.min(maxN, opts.length));
+      const pool = [...opts];
+      const chosen: string[] = [];
+      for (let k = 0; k < n; k++) {
+        const idx = Math.floor(Math.random() * pool.length);
+        chosen.push(pool.splice(idx, 1)[0]);
+      }
+      // Preserve original order
+      return opts.filter((o) => chosen.includes(o)).join(",");
+    };
+
+    const fu3Options = ["handshake", "linkedin", "personal_network", "company_sites", "career_fairs", "havent_looked"];
+    const fu4Options = ["know_where_to_apply", "stronger_resume", "interview_practice", "someone_to_talk_to", "more_time"];
+
     for (let q = 0; q < 5; q++) {
       if (q < extraQs) {
-        fu.push(pick(followUps[q].options).id);
+        const fuQ = followUps[q];
+        if (fuQ?.id === "follow_up_3") {
+          fu.push(pickMulti(fu3Options));
+        } else if (fuQ?.id === "follow_up_4") {
+          fu.push(pickMulti(fu4Options));
+        } else {
+          fu.push(pick(fuQ.options).id);
+        }
       } else {
         fu.push("");
       }
