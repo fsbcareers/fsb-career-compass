@@ -115,6 +115,11 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
             {followUpData.map((fu, idx) => (
               <div key={idx}>
                 <p className="text-xs font-medium text-muted-foreground mb-2">{fu.question}</p>
+                {fu.multiSelect && (
+                  <p className="text-[11px] text-muted-foreground italic mb-2">
+                    Students could select multiple options
+                  </p>
+                )}
                 <div className="space-y-1">
                   {fu.distribution.map((d) => (
                     <div key={d.label} className="flex items-center gap-2 text-sm">
