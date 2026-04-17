@@ -157,6 +157,24 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
           </tr>
         </tbody>
       </table>
+
+      {/* Color legend */}
+      <div className="mt-4 flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-muted-foreground whitespace-nowrap">Few stuck here</span>
+          <div
+            className="h-2 flex-1 rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, hsl(155 60% 92%), hsl(48 96% 89%), hsl(32 98% 83%), hsl(27 96% 72%), hsl(0 84% 70%))",
+            }}
+          />
+          <span className="text-xs text-muted-foreground whitespace-nowrap">Major bottleneck</span>
+        </div>
+        <p className="text-[11px] text-muted-foreground italic">
+          Already Secured uses a green scale (higher = better outcome).
+        </p>
+      </div>
     </div>
   );
 };
