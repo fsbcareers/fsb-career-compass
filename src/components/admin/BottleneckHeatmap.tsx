@@ -28,10 +28,18 @@ const shortLabels: Record<string, string> = {
 
 function getCellColor(pct: number): { bg: string; text: string } {
   if (pct === 0) return { bg: "transparent", text: "hsl(var(--muted-foreground))" };
-  if (pct < 10) return { bg: "hsl(160 40% 94%)", text: "hsl(var(--foreground))" };
-  if (pct < 20) return { bg: "hsl(160 50% 75%)", text: "hsl(var(--foreground))" };
-  if (pct < 30) return { bg: "hsl(160 60% 55%)", text: "hsl(0 0% 100%)" };
-  return { bg: "hsl(160 70% 37%)", text: "hsl(0 0% 100%)" };
+  if (pct <= 10) return { bg: "hsl(155 60% 92%)", text: "hsl(var(--foreground))" }; // light green
+  if (pct <= 20) return { bg: "hsl(48 96% 89%)", text: "hsl(var(--foreground))" }; // light amber
+  if (pct <= 30) return { bg: "hsl(32 98% 83%)", text: "hsl(var(--foreground))" }; // light orange
+  if (pct <= 40) return { bg: "hsl(27 96% 72%)", text: "hsl(var(--foreground))" }; // medium coral
+  return { bg: "hsl(0 84% 70%)", text: "hsl(0 0% 100%)" }; // strong red
+}
+
+function getSecuredColor(pct: number): { bg: string; text: string } {
+  if (pct === 0) return { bg: "transparent", text: "hsl(var(--muted-foreground))" };
+  if (pct <= 20) return { bg: "hsl(155 60% 92%)", text: "hsl(var(--foreground))" };
+  if (pct <= 40) return { bg: "hsl(160 55% 75%)", text: "hsl(var(--foreground))" };
+  return { bg: "hsl(160 65% 35%)", text: "hsl(0 0% 100%)" };
 }
 
 const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatmapProps) => {
@@ -149,6 +157,24 @@ const BottleneckHeatmap = ({ data, selectedCell, onCellSelect }: BottleneckHeatm
           </tr>
         </tbody>
       </table>
+
+      {/* Color legend */}
+      <div className="mt-4 flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-muted-foreground whitespace-nowrap">Few stuck here</span>
+          <div
+            className="h-2 flex-1 rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, hsl(155 60% 92%), hsl(48 96% 89%), hsl(32 98% 83%), hsl(27 96% 72%), hsl(0 84% 70%))",
+            }}
+          />
+          <span className="text-xs text-muted-foreground whitespace-nowrap">Major bottleneck</span>
+        </div>
+        <p className="text-[11px] text-muted-foreground italic">
+          Already Secured uses a green scale (higher = better outcome).
+        </p>
+      </div>
     </div>
   );
 };

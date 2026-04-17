@@ -29,9 +29,7 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
   };
 
   const isSenior = classYear === "senior";
-  const buckets = surveyConfig.buckets.filter(
-    (b) => !(b as any).seniorOnly || isSenior
-  );
+  const buckets = surveyConfig.buckets;
   const journeyWord = isSenior ? "job" : "internship";
 
   return (
@@ -70,12 +68,12 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
                   className={`relative flex items-center w-full min-h-[56px] py-3 pl-[42px] pr-3 rounded-xl border-2 transition-all duration-200 text-left active:scale-[0.97]
                     ${
                       isExpanded
-                        ? (bucket as any).seniorOnly
+                        ? bucket.id === "already_done"
                           ? "bg-[hsl(155_40%_93%)] border-[hsl(160_60%_40%)]"
                           : "bg-survey-highlight-bg border-primary"
                         : expandedBucket && !isExpanded
                         ? "bg-survey-button-bg border-survey-button-border opacity-60"
-                        : (bucket as any).seniorOnly
+                        : bucket.id === "already_done"
                         ? "bg-[hsl(155_40%_95%)] border-[hsl(160_30%_75%)] hover:bg-[hsl(155_40%_90%)]"
                         : "bg-survey-button-bg border-survey-button-border hover:bg-survey-highlight-bg"
                     }
@@ -95,12 +93,12 @@ const StageSelect = ({ onSelect, classYear }: StageSelectProps) => {
                   {/* Icon */}
                   <span
                     className={`shrink-0 mr-3 transition-colors duration-150 ${
-                      (bucket as any).seniorOnly
+                      bucket.id === "already_done"
                         ? "text-[hsl(160_60%_40%)]"
                         : isExpanded ? "text-primary" : "text-muted-foreground"
                     }`}
                   >
-                    {getIcon(bucket.icon, (bucket as any).seniorOnly ? 24 : 22)}
+                    {getIcon(bucket.icon, bucket.id === "already_done" ? 24 : 22)}
                   </span>
 
                   {/* Text */}

@@ -3,10 +3,9 @@ export const surveyConfig = {
     {
       id: "already_done",
       label: "Already secured",
-      description: "I already have a job or offer lined up",
+      description: "I already have an internship or job lined up",
       icon: "CheckCircle",
       stages: ["already_secured"],
-      seniorOnly: true,
     },
     {
       id: "getting_started",
@@ -41,10 +40,10 @@ export const surveyConfig = {
   pipelineStages: [
     {
       id: "already_secured",
-      label: "I already have a job or offer secured",
+      label: "I already have an internship or job lined up",
       shortLabel: "Secured",
       icon: "CheckCircle",
-      drilldownQuestion: "Looking back at your job search, what was the most challenging part of the process?",
+      drilldownQuestion: "Looking back, what was the most challenging part of the process?",
       drilldownBuckets: [
         {
           id: "early_challenges",
@@ -62,14 +61,14 @@ export const surveyConfig = {
         },
       ],
       drilldownOptions: [
-        { id: "retro_direction", label: "Figuring out what kind of job I actually wanted", icon: "Compass" },
+        { id: "retro_direction", label: "Figuring out what kind of role I actually wanted", icon: "Compass" },
         { id: "retro_finding", label: "Finding the right opportunities to apply to", icon: "Search" },
         { id: "retro_materials", label: "Getting my resume and materials strong enough", icon: "FileText" },
         { id: "retro_hearing_back", label: "Hearing back after submitting applications", icon: "Inbox" },
         { id: "retro_interviews", label: "Performing well in interviews", icon: "MessageSquare" },
-        { id: "retro_offers", label: "Evaluating and deciding between offers", icon: "Scale" },
+        { id: "retro_offers", label: "Deciding between options", icon: "Scale" },
       ],
-      resourceNudge: "Congrats on securing your offer! Your feedback helps us better support students who are still navigating the process. Thank you!",
+      resourceNudge: "Congrats on locking it in! Your response helps us understand what the hardest parts of the search really are, so we can better support students who are still looking.",
     },
     {
       id: "awareness",
@@ -365,10 +364,11 @@ export const surveyConfig = {
         },
       ],
       options: [
-        { id: "secured_internship_converted", label: "My internship converted to a full-time offer", icon: "Repeat" },
+        { id: "secured_internship_converted", label: "A previous internship or experience converted into an offer", icon: "Repeat" },
         { id: "secured_career_center", label: "Working with a career advisor or attending a career event", icon: "Users" },
         { id: "secured_personal_network", label: "A personal connection or referral", icon: "Link" },
-        { id: "secured_self_directed", label: "I figured it out on my own through online applications", icon: "Target" },
+        { id: "secured_self_directed", label: "I found it on my own through online applications", icon: "Target" },
+        { id: "secured_professor", label: "A professor or class connection", icon: "GraduationCap" },
       ],
     },
     {
@@ -425,7 +425,8 @@ export const surveyConfig = {
     },
     {
       id: "follow_up_3",
-      question: "What's been your biggest source of internship leads so far?",
+      question: "Where have you been looking for opportunities? (select all that apply)",
+      multiSelect: true,
       buckets: [
         {
           id: "online_platforms",
@@ -436,10 +437,10 @@ export const surveyConfig = {
         },
         {
           id: "offline_or_none",
-          label: "Offline or haven't looked",
-          description: "Personal connections or not started",
+          label: "Offline or events",
+          description: "Connections, fairs, or not started",
           icon: "Users",
-          options: ["personal_network", "havent_looked"],
+          options: ["personal_network", "career_fairs", "havent_looked"],
         },
       ],
       options: [
@@ -447,12 +448,14 @@ export const surveyConfig = {
         { id: "linkedin", label: "LinkedIn", icon: "Linkedin" },
         { id: "personal_network", label: "Family, friends, or personal connections", icon: "Users" },
         { id: "company_sites", label: "Company websites directly", icon: "Globe" },
+        { id: "career_fairs", label: "Career fairs or employer events", icon: "Calendar" },
         { id: "havent_looked", label: "I haven't started looking yet", icon: "Search" },
       ],
     },
     {
       id: "follow_up_4",
-      question: "What would make the biggest difference for you right now?",
+      question: "What would help you most right now? (select all that apply)",
+      multiSelect: true,
       buckets: [
         {
           id: "finding_opportunities",
@@ -464,9 +467,9 @@ export const surveyConfig = {
         {
           id: "getting_support",
           label: "Getting support",
-          description: "Practice and guidance",
+          description: "Practice, guidance, and time",
           icon: "MessageSquare",
-          options: ["interview_practice", "someone_to_talk_to"],
+          options: ["interview_practice", "someone_to_talk_to", "more_time"],
         },
       ],
       options: [
@@ -474,6 +477,7 @@ export const surveyConfig = {
         { id: "stronger_resume", label: "Having a stronger resume or application", icon: "FileCheck" },
         { id: "interview_practice", label: "Getting real practice before interviews", icon: "Mic" },
         { id: "someone_to_talk_to", label: "Having someone walk me through the whole process", icon: "MessageSquare" },
+        { id: "more_time", label: "Just having more time to focus on this", icon: "Clock" },
       ],
     },
     {

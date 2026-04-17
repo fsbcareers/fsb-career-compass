@@ -32,23 +32,30 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
       }
     });
 
-    const fuData: { question: string; distribution: { label: string; count: number }[] }[] = [];
-    for (let i = 0; i < 5; i++) {
-      const key = `follow_up_${i + 1}` as keyof SurveyResponse;
+    const fuData: { question: string; distribution: { label: string; count: number }[]; multiSelect?: boolean }[] = [];
+    surveyConfig.followUpQuestions.forEach((fuQ, qIdx) => {
+      // Map question id to the SurveyResponse field
+      const key = fuQ.id as keyof SurveyResponse;
       const fuCounts: Record<string, number> = {};
       subset.forEach((r) => {
         const val = r[key] as string;
-        if (val) fuCounts[val] = (fuCounts[val] || 0) + 1;
+        if (!val) return;
+        // Multi-select values are comma-separated
+        const parts = (fuQ as any).multiSelect ? val.split(",").map((p) => p.trim()).filter(Boolean) : [val];
+        parts.forEach((p) => {
+          fuCounts[p] = (fuCounts[p] || 0) + 1;
+        });
       });
       if (Object.keys(fuCounts).length > 0) {
         fuData.push({
-          question: surveyConfig.followUpQuestions[i]?.question || `Follow-up ${i + 1}`,
+          question: fuQ.question,
+          multiSelect: !!(fuQ as any).multiSelect,
           distribution: Object.entries(fuCounts)
             .map(([id, count]) => ({ label: getLabel(id), count }))
             .sort((a, b) => b.count - a.count),
         });
       }
-    }
+    });
 
     return { filtered: subset, detailCounts: counts, header: hdr, followUpData: fuData };
   }, [data, selectedCell]);
@@ -108,6 +115,11 @@ const DrilldownPanel = ({ data, selectedCell }: DrilldownPanelProps) => {
             {followUpData.map((fu, idx) => (
               <div key={idx}>
                 <p className="text-xs font-medium text-muted-foreground mb-2">{fu.question}</p>
+                {fu.multiSelect && (
+                  <p className="text-[11px] text-muted-foreground italic mb-2">
+                    Students could select multiple options
+                  </p>
+                )}
                 <div className="space-y-1">
                   {fu.distribution.map((d) => (
                     <div key={d.label} className="flex items-center gap-2 text-sm">
