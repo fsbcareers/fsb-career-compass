@@ -29,6 +29,16 @@ const AdminNav = () => {
       >
         Survey editor →
       </button>
+      <button
+        onClick={() => navigate("/admin/resources")}
+        className={`text-sm transition-colors ${
+          isActive("/admin/resources")
+            ? "text-foreground font-medium"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+      >
+        Resources →
+      </button>
       <Link
         to="/distribute"
         target="_blank"

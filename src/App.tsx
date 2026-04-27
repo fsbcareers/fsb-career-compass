@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Survey from "./pages/Survey.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminEditor from "./pages/AdminEditor.tsx";
+import AdminResources from "./pages/AdminResources.tsx";
+import Resources from "./pages/Resources.tsx";
 import Distribute from "./pages/Distribute.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -20,8 +22,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Navigate to="/survey" replace />} />
           <Route path="/survey" element={<Survey />} />
+          <Route path="/resources" element={<Resources />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/editor" element={<AdminEditor />} />
+          <Route path="/admin/resources" element={<AdminResources />} />
           <Route path="/distribute" element={<Distribute />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
