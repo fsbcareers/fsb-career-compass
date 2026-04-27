@@ -31,6 +31,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const [rowId, setRowId] = useState<string | null>(null);
   const [classYear, setClassYear] = useState<string>(hasValidYear ? initialYear! : "");
   const [stageId, setStageId] = useState("");
+  const [bottleneckDetail, setBottleneckDetail] = useState("");
   const [questionCount, setQuestionCount] = useState(hasValidYear ? 1 : 0);
   const [followUpIndex, setFollowUpIndex] = useState(0);
 
@@ -99,6 +100,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
   const handleDrilldown = (optionId: string) => {
     setQuestionCount((c) => Math.max(c, 3));
     setShowEncouragement(true);
+    setBottleneckDetail(optionId);
     pushScreen("follow_up");
     saveAnswer(rowId, "bottleneck_detail", optionId);
   };
@@ -127,6 +129,7 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
     setRowId(null);
     setClassYear("");
     setStageId("");
+    setBottleneckDetail("");
     setQuestionCount(0);
     setFollowUpIndex(0);
     setHistory([]);
