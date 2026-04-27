@@ -171,7 +171,12 @@ const SurveyContainer = ({ initialYear }: SurveyContainerProps) => {
               />
             )}
             {screen === "confirmation" && (
-              <Confirmation stageId={stageId} onRestart={handleRestart} classYear={classYear} />
+              <Confirmation
+                stageId={stageId}
+                onRestart={handleRestart}
+                classYear={classYear}
+                bottleneckDetail={bottleneckDetail}
+              />
             )}
           </div>
         </div>
